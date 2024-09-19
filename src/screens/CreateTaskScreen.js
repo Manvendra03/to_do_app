@@ -18,6 +18,7 @@ import React, {useState} from 'react';
 import DatePicker from 'react-native-date-picker';
 import TimeSelector from '../components/TimeSelector';
 import { NavigationRouteContext } from '@react-navigation/native';
+import AppBar from '../components/AppBar';
 
 const CreateTaskScreen = ({navigation}) => {
   const [date, setDate] = useState(new Date());
@@ -55,39 +56,10 @@ const CreateTaskScreen = ({navigation}) => {
   const [description, setDescription] = useState('');
 
   return (
-    <ScrollView style={{height: '100%', width: '100%', paddingHorizontal: 15,backgroundColor: "#ffffff"}}>
-      <View
-        style={{
-          height: 60,
-          width: '100%',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginBottom: 20,
-        }}>
-        <TouchableOpacity
-          style={{
-            position: 'absolute',
-            left: 0,
-            height: 35,
-            width: 35,
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderRadius: 5,
-            backgroundColor: '#ECF4FD',
-          }}
-          onPress={()=>{navigation.goBack()}}
-          >
-          <Image
-            source={require('../assets/arrow_icon.png')}
-            style={{height: 30, width: 30, transform: [{rotate: '180deg'}]}}
-          />
-        </TouchableOpacity>
-        <Text style={{fontSize: 22, fontWeight: '700', color: 'black'}}>
-          Create a Task
-        </Text>
-      </View>
-
+    <ScrollView style={{height: '100%', width: '100%',backgroundColor: "#ffffff"}}>
+     <AppBar navigation={navigation} tittle={"Create a Task"} style = {{left: 0}}/>
+      
+      <View style = {{paddingHorizontal: 15}}>
       <Text style={styles.heading}>Task Tittle</Text>
 
       <TextInput
@@ -308,6 +280,7 @@ const CreateTaskScreen = ({navigation}) => {
           setOpenTime(false);
         }}
       />
+      </View>
     </ScrollView>
   );
 };

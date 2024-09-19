@@ -6,10 +6,11 @@ import HomeScreen from '../screens/HomeScreen';
 import CreateTaskScreen from '../screens/CreateTaskScreen';
 import MainNavigation from './MainNavigation';
 import CustomDrawer from '../components/CustomDrawer';
-import AllTask from '../screens/drawerScreens/AllTask';
+import AllTask from '../screens/drawerScreens/tabNavigation/AllTask';
 import Dashboard from '../screens/drawerScreens/Dashboard';
 import Help from '../screens/drawerScreens/Help';
 import ContactUs from '../screens/drawerScreens/ContactUs';
+import TabNavigation from './TabNavigation';
 
 const Drawer = createDrawerNavigator();
 
@@ -22,7 +23,7 @@ const DrawerNavigation = () => {
            <CustomDrawer {...props}/> 
         )}>
         <Drawer.Screen name="Home" component={MainNavigation} />
-        <Drawer.Screen name="All Task" component={AllTask} />
+        <Drawer.Screen name="Task Overview" component={TabNavigation} />
         <Drawer.Screen name="Dashboard" component={Dashboard} />
         <Drawer.Screen name="Help" component={Help} />
         <Drawer.Screen name="Contact Us" component={ContactUs} />

@@ -16,6 +16,7 @@ import Modal from 'react-native-modal';
 import LinearGradient from 'react-native-linear-gradient';
 import * as Progress from 'react-native-progress';
 import TimeSelector from '../components/TimeSelector';
+import TabNavigation from '../navigation/TabNavigation';
 
 const HomeScreen = ({navigation}) => {
   const taskData = [
@@ -314,7 +315,7 @@ const HomeScreen = ({navigation}) => {
         <Text style={{fontSize: 20, fontWeight: '700', color: 'black'}}>
           Today's Task
         </Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={()=>{navigation.navigate("TabNavigation")}}>
           <Text style={{color: 'grey'}}>See All</Text>
         </TouchableOpacity>
       </View>
