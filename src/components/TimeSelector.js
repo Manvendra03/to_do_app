@@ -42,6 +42,7 @@ const TimeSelector = ({setOpen , time , isStart,setIsStartTimer }) => {
                 borderRadius: 8,
                 alignItems: 'center',
                 backgroundColor: '#ECF4FD',
+
               }}>
               <Image
                 source={require('../assets/arrow_icon.png')}

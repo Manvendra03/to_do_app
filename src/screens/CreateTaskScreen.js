@@ -55,7 +55,7 @@ const CreateTaskScreen = ({navigation}) => {
   const [description, setDescription] = useState('');
 
   return (
-    <ScrollView style={{height: '100%', width: '100%', paddingHorizontal: 15}}>
+    <ScrollView style={{height: '100%', width: '100%', paddingHorizontal: 15,backgroundColor: "#ffffff"}}>
       <View
         style={{
           height: 60,

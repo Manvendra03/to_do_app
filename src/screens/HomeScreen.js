@@ -143,11 +143,21 @@ const HomeScreen = ({navigation}) => {
       style={{height: '100%', width: '100%', backgroundColor: '#ECF4FD'}}>
       {/* style={{height: '100%', width: '100%', backgroundColor: '#F6F6F6'}}> */}
       <View style={styles.appBarStyle}>
+        <TouchableOpacity
+          style={{marginRight: 20, marginLeft: 5}}
+          onPress={() => {
+            navigation.openDrawer();
+          }}>
+          <Image
+            source={require('../assets/menus.png')}
+            style={{height: 30, width: 25}}
+          />
+        </TouchableOpacity>
         <Text style={{fontSize: 22, fontWeight: '700', color: 'black'}}>
           {' '}
           {app_name}
         </Text>
-        <View
+        {/* <TouchableOpacity
           style={{
             height: 45,
             width: 45,
@@ -155,14 +165,15 @@ const HomeScreen = ({navigation}) => {
             justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: '#003685',
-          }}>
-          {/* <Image source={{uri: "https://images.ctfassets.net/h6goo9gw1hh6/2sNZtFAWOdP1lmQ33VwRN3/24e953b920a9cd0ff2e1d587742a2472/1-intro-photo-final.jpg?w=1200&h=992&fl=progressive&q=70&fm=jpg"}}
-                   style = {{flex:1 , borderRadius: 30}} 
-            /> */}
+          }}
+          
+          onPress={()=>{ navigation.openDrawer()}}
+          
+          >
           <Text style={{fontSize: 24, fontWeight: '700', color: 'white'}}>
             M
           </Text>
-        </View>
+        </TouchableOpacity> */}
       </View>
 
       {/* Offer Card */}
@@ -179,7 +190,7 @@ const HomeScreen = ({navigation}) => {
           alignSelf: 'center',
           justifyContent: 'flex-start',
           borderRadius: 20,
-          marginTop: 20,
+          marginTop: 10,
         }}>
         <Text style={{fontSize: 20, fontWeight: '600', color: 'white'}}>
           Today's progress summery
@@ -375,28 +386,31 @@ const HomeScreen = ({navigation}) => {
               paddingHorizontal: 20,
               paddingTop: 40,
             }}>
-           <TouchableOpacity style ={{  position: 'absolute',
+            <TouchableOpacity
+              style={{
+                position: 'absolute',
                 right: 10,
-                backgroundColor: "#ECF4FD",
+                backgroundColor: '#ECF4FD',
                 height: 25,
                 width: 25,
                 borderRadius: 20,
-                alignItems: "center",
-                justifyContent: "center",
+                alignItems: 'center',
+                justifyContent: 'center',
 
                 top: 10,
-              }} 
-              onPress={()=>{setShowTask(false)}}
-              >
-           <Image
-              source={require('../assets/close.png')}
-              style={{
-                height: 10,
-                width: 10,
-                tintColor: "grey"
               }}
-            />
-           </TouchableOpacity>
+              onPress={() => {
+                setShowTask(false);
+              }}>
+              <Image
+                source={require('../assets/close.png')}
+                style={{
+                  height: 10,
+                  width: 10,
+                  tintColor: 'grey',
+                }}
+              />
+            </TouchableOpacity>
             <Text style={styles.heading}>Task Tittle</Text>
 
             <TextInput
@@ -491,8 +505,20 @@ const HomeScreen = ({navigation}) => {
                 bottom: 10,
                 alignSelf: 'center',
               }}>
-              <FormButton bgcolor="red" tittle={'Delete'}  func ={ ()=>{setShowTask(false)}}/>
-              <FormButton bgcolor="green" tittle={'Done'} func ={ ()=>{setShowTask(false)}}/>
+              <FormButton
+                bgcolor="red"
+                tittle={'Delete'}
+                func={() => {
+                  setShowTask(false);
+                }}
+              />
+              <FormButton
+                bgcolor="green"
+                tittle={'Done'}
+                func={() => {
+                  setShowTask(false);
+                }}
+              />
             </View>
           </View>
         </View>
@@ -509,10 +535,11 @@ const styles = StyleSheet.create({
     width: '100%',
     // backgroundColor: 'red',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
     paddingLeft: 10,
     paddingRight: 20,
-    marginTop: 20,
+    marginTop: 10,
   },
   input: {
     height: 40,
@@ -540,7 +567,7 @@ const styles = StyleSheet.create({
   heading: {fontSize: 18, fontWeight: '600', color: 'black'},
 });
 
-const FormButton = ({tittle, bgcolor , func}) => {
+const FormButton = ({tittle, bgcolor, func}) => {
   return (
     <TouchableOpacity
       style={[
@@ -548,8 +575,6 @@ const FormButton = ({tittle, bgcolor , func}) => {
         {backgroundColor: bgcolor, width: '48%', height: 50, borderRadius: 10},
       ]}
       onPress={() => {
-
-
         func();
         //  var newTask = {
         //   name : tittle,
