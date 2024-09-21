@@ -17,6 +17,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import * as Progress from 'react-native-progress';
 import TimeSelector from '../components/TimeSelector';
 import TabNavigation from '../navigation/TabNavigation';
+import EditModel from '../components/EditModel';
 
 const HomeScreen = ({navigation}) => {
   const taskData = [
@@ -315,7 +316,10 @@ const HomeScreen = ({navigation}) => {
         <Text style={{fontSize: 20, fontWeight: '700', color: 'black'}}>
           Today's Task
         </Text>
-        <TouchableOpacity onPress={()=>{navigation.navigate("TabNavigation")}}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('TabNavigation');
+          }}>
           <Text style={{color: 'grey'}}>See All</Text>
         </TouchableOpacity>
       </View>
@@ -337,7 +341,7 @@ const HomeScreen = ({navigation}) => {
           height: 60,
           width: 60,
           borderRadius: 70,
-          backgroundColor: '#1464C7',
+          backgroundColor: '#1E368A',
           position: 'absolute',
           bottom: 50,
           right: 30,
@@ -353,22 +357,7 @@ const HomeScreen = ({navigation}) => {
         />
       </TouchableOpacity>
 
-      {/* Show Screen */}
-
-      {/* {
-          showTask ?   <View
-          style={{
-            height: '100%',
-            width: '100%',
-            justifyContent: 'center',
-            backgroundColor: 'black',
-            alignItems: 'center',
-            opacity: 0.85,
-            position: 'absolute',
-          }}></View>
-:<View/>  
-        } */}
-
+    
       <Modal isVisible={showTask}>
         <View
           style={{
@@ -439,7 +428,6 @@ const HomeScreen = ({navigation}) => {
                 marginBottom: 15,
               }}>
               <Text>17 June 2024 , Tuesday</Text>
-              {/* <Text>{dateString}</Text> */}
 
               <TouchableOpacity
                 onPress={() => {
@@ -523,7 +511,10 @@ const HomeScreen = ({navigation}) => {
             </View>
           </View>
         </View>
+        {/* <EditModel setShowTask = {setShowTask}/> */}
       </Modal>
+
+
     </SafeAreaView>
   );
 };
@@ -568,7 +559,7 @@ const styles = StyleSheet.create({
   heading: {fontSize: 18, fontWeight: '600', color: 'black'},
 });
 
-const FormButton = ({tittle, bgcolor, func}) => {
+export const FormButton = ({tittle, bgcolor, func}) => {
   return (
     <TouchableOpacity
       style={[

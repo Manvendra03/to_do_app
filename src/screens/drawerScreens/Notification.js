@@ -2,15 +2,15 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import AppBar from '../../components/AppBar'
 
-const Help = () => {
+const Notification = () => {
   return (
     <View>
-      <AppBar tittle= "Help"/>
+      <AppBar tittle= "Notification"/>
       <Text>Help</Text>
     </View>
   )
 }
 
-export default Help
+export default Notification
 
 const styles = StyleSheet.create({})

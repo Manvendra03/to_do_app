@@ -11,8 +11,17 @@ const Tab = createMaterialTopTabNavigator();
 const TabNavigation = () => {
   return (
     <View style={{height: '100%', backgroundColor: 'white', width: '100%'}}>
-      <AppBar tittle={'All Tasks'} />
-      <Tab.Navigator style={{top: -10}}>
+      <AppBar tittle={'All Task'} />
+      <Tab.Navigator 
+          screenOptions={{
+            tabBarIndicatorStyle: { backgroundColor: '#1E368A' },  // Set the indicator color here
+            tabBarActiveTintColor: '#1E368A',  // Set active text color
+            tabBarInactiveTintColor: 'gray',  // Set inactive text color
+            tabBarLabelStyle: { fontSize: 12 , fontWeight: "500" },  // Customize label style
+            // Adjust tab bar position
+          }}
+        
+          style={{top: -10 }} >
         <Tab.Screen name="All Task" component={AllTask} />
         <Tab.Screen name="Finished" component={CompleteTask} />
         <Tab.Screen name="Pending" component={IncompleteTask} />

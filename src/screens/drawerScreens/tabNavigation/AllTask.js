@@ -130,6 +130,7 @@ const AllTask = () => {
         </TouchableOpacity>
       </View>
     );
+    // return (< index ={index} item ={item}/>);
   };
 
   return (

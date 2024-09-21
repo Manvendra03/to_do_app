@@ -130,7 +130,7 @@ const IncompleteTask = () => {
           </Text>
 
        <TouchableOpacity style= {{  padding: 5,flexDirection : "row", alignItems: "center" , backgroundColor: "transparent" , position: "absolute", top: 10, right: 15, borderRadius: 3 }}> 
-        <Image source={require("../../../assets/pencil.png")} style = {{height: 15 , width:15 , tintColor: "black"}} />
+        <Image source={require("../../../assets/pencil.png")} style = {{height: 15 , width:15 , tintColor: "grey"}} />
         {/* <Text style = {{fontWeight: 'bold',marginLeft: 5 , fontSize: 13 , color :"grey"}} >Edit</Text> */}
        
         </TouchableOpacity> 

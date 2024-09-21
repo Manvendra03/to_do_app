@@ -8,7 +8,7 @@ import MainNavigation from './MainNavigation';
 import CustomDrawer from '../components/CustomDrawer';
 import AllTask from '../screens/drawerScreens/tabNavigation/AllTask';
 import Dashboard from '../screens/drawerScreens/Dashboard';
-import Help from '../screens/drawerScreens/Help';
+import Notification from '../screens/drawerScreens/Notification';
 import ContactUs from '../screens/drawerScreens/ContactUs';
 import TabNavigation from './TabNavigation';
 
@@ -25,7 +25,7 @@ const DrawerNavigation = () => {
         <Drawer.Screen name="Home" component={MainNavigation} />
         <Drawer.Screen name="Task Overview" component={TabNavigation} />
         <Drawer.Screen name="Dashboard" component={Dashboard} />
-        <Drawer.Screen name="Help" component={Help} />
+        <Drawer.Screen name="Notification" component={Notification} />
         <Drawer.Screen name="Contact Us" component={ContactUs} />
         {/* <Drawer.Screen
           name="CreateTask"

@@ -310,7 +310,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
     borderRadius: 15,
-    backgroundColor: '#3787EB',
+    backgroundColor: '#1E368A',
   },
 });
 
