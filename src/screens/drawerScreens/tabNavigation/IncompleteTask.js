@@ -14,8 +14,12 @@ import AppBar from '../../../components/AppBar'
 import { color_combination } from '../../../constants'
 import { FormButton } from '../../HomeScreen';
 
-const IncompleteTask = () => {
+const IncompleteTask = ({route}) => {
  
+  const setSelectedTask = route.params.setSelectedTask;
+  const setShowTask = route.params.setShowTask;
+  
+  
   const taskData = [
     {
       icon: require('../../../assets/task_Icons/brush.png'),
@@ -76,6 +80,7 @@ const IncompleteTask = () => {
   ];
   const renderTasks = ({index, item}) => {
     // console.log("item : ",item);
+
     return (
       <View
         style={{
@@ -129,7 +134,11 @@ const IncompleteTask = () => {
           {'\t\t\t\t\t\t\t\t\t'}Object containing the initial height and width of the screens. Passing this will improve the initial rendering performance. For most apps, this is a good default  
           </Text>
 
-       <TouchableOpacity style= {{  padding: 5,flexDirection : "row", alignItems: "center" , backgroundColor: "transparent" , position: "absolute", top: 10, right: 15, borderRadius: 3 }}> 
+       <TouchableOpacity style= {{  padding: 5,flexDirection : "row", alignItems: "center" , backgroundColor: "transparent" , position: "absolute", top: 10, right: 15, borderRadius: 3 }} 
+           onPress={()=>{
+            setSelectedTask(item) ;
+            setShowTask(true);
+           }}> 
         <Image source={require("../../../assets/pencil.png")} style = {{height: 15 , width:15 , tintColor: "grey"}} />
         {/* <Text style = {{fontWeight: 'bold',marginLeft: 5 , fontSize: 13 , color :"grey"}} >Edit</Text> */}
        

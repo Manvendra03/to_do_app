@@ -63,7 +63,14 @@ export function getTimeFromHoursAndMinutes(hours, minutes)
         {
               hours =12;
         } 
-    
+        
+        console.log(typeof(minutes));
+
+        if(minutes < 10)
+        {
+             minutes= "0"+minutes;
+        }
+        console.log("update",minutes);
         var timeString = hours+" : "+minutes+ " "+x;
         return timeString;
 } 

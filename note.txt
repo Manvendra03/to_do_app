@@ -1,0 +1,8 @@
+1.   at the time of dployment if there is any warnning or error regarding the non-serialized values or functions 
+    
+     (it is error due to pass the callback setShowTask and setSelecetedTask at the screen directly )
+   
+   solution : - 
+               
+               use context api at tab navigation and do not pass the callback directly to the tabs ALLtask FinishedTAsk and pending setShowTask
+               
