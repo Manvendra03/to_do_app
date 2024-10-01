@@ -21,7 +21,7 @@ const AppBar = ({tittle}) => {
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-      marginBottom: 20,
+      marginBottom: 10,
     }}>
     <TouchableOpacity
       style={{

@@ -13,6 +13,7 @@ import React from 'react'
 import AppBar from '../../../components/AppBar'
 import { color_combination } from '../../../constants'
 import { FormButton } from '../../HomeScreen';
+import NoTaskAvailable from '../../../components/NoTaskAvailable';
 
 const IncompleteTask = ({route}) => {
  
@@ -20,64 +21,151 @@ const IncompleteTask = ({route}) => {
   const setShowTask = route.params.setShowTask;
   
   
-  const taskData = [
+  // const taskData = [
+  //   {
+  //     icon: require('../../../assets/task_Icons/brush.png'),
+  //     tittle: 'UI Design',
+  //     description: '',
+  //     time: '',
+  //     isCompleted: false,
+  //   },
+  //   {
+  //     icon: require('../../../assets/task_Icons/other.png'),
+  //     tittle: 'rent Car',
+  //     description: '',
+  //     time: '',
+  //     isCompleted: false,
+  //   },
+  //   {
+  //     icon: require('../../../assets/task_Icons/brush.png'),
+  //     tittle: 'App Development',
+  //     description: '',
+  //     time: '',
+  //     isCompleted: false,
+  //   },
+  //   {
+  //     icon: require('../../../assets/task_Icons/book.png'),
+  //     tittle: 'stock Market Revision ',
+  //     description: '',
+  //     time: '',
+  //     isCompleted: false,
+  //   },
+  //   {
+  //     icon: require('../../../assets/task_Icons/cart.png'),
+  //     tittle: 'Shopping',
+  //     description: '',
+  //     time: '',
+  //     isCompleted: false,
+  //   },
+  //   {
+  //     icon: require('../../../assets/task_Icons/eat.png'),
+  //     tittle: 'Eatting',
+  //     description: '',
+  //     time: '',
+  //     isCompleted: false,
+  //   },
+  //   {
+  //     icon: require('../../../assets/task_Icons/brush.png'),
+  //     tittle: 'UI Design',
+  //     description: '',
+  //     time: '',
+  //     isCompleted: false,
+  //   },
+  //   {
+  //     icon: require('../../../assets/task_Icons/meet.png'),
+  //     tittle: 'Out with friends',
+  //     description: '',
+  //     time: '',
+  //     isCompleted: false,
+  //   },
+  // ];
+   
+  const taskData =
+  [
     {
-      icon: require('../../../assets/task_Icons/brush.png'),
+      icon: require('../../../assets/task_Icons/eat.png'),
       tittle: 'UI Design',
-      description: '',
-      time: '',
+      category: "Work",
+      date: "24 September 2024 , Tuesday",
+      startTime: "3:34 PM",
+      endTime: "5:45 PM",
+      description: 'This is description for other tasks',
       isCompleted: false,
     },
     {
       icon: require('../../../assets/task_Icons/other.png'),
       tittle: 'rent Car',
-      description: '',
-      time: '',
+      description: 'This is renting car and i want to rent car ',
+      category: "Business",
+      date: "27 September 2024 , Tuesday",
+      startTime: "3:34 PM",
+      endTime: "5:45 PM",
       isCompleted: false,
     },
     {
-      icon: require('../../../assets/task_Icons/brush.png'),
+      icon: require('../../../assets/task_Icons/eat.png'),
       tittle: 'App Development',
-      description: '',
-      time: '',
+      description: 'This is app dev with react-native ',
+       category: "Development",
+      date: "27 October 2024 , Tuesday",
+      startTime: "1:34 PM",
+      endTime: "5:45 PM",
       isCompleted: false,
     },
     {
       icon: require('../../../assets/task_Icons/book.png'),
       tittle: 'stock Market Revision ',
-      description: '',
-      time: '',
+      description: 'Option trading gain only profit hacker boltey',
+       category: "Learning",
+      date: "31 December 2024 , Tuesday",
+      startTime: "1:45 PM",
+      endTime: "2:55 PM",
       isCompleted: false,
     },
     {
       icon: require('../../../assets/task_Icons/cart.png'),
       tittle: 'Shopping',
-      description: '',
-      time: '',
+      description: 'grocessarys',
+       category: "Other",
+      date: "29 September 2024 , Tuesday",
+      startTime: "4:34 PM",
+      endTime: "7:45 PM",
       isCompleted: false,
     },
     {
       icon: require('../../../assets/task_Icons/eat.png'),
       tittle: 'Eatting',
       description: '',
-      time: '',
+       category: "Meal",
+      date: "24 September 2024 , Tuesday",
+      startTime: "3:34 PM",
+      endTime: "5:45 PM",
       isCompleted: false,
     },
     {
-      icon: require('../../../assets/task_Icons/brush.png'),
+      icon: require('../../../assets/task_Icons/eat.png'),
       tittle: 'UI Design',
       description: '',
-      time: '',
+       category: "Work",
+      date: "24 September 2024 , Tuesday",
+      startTime: "3:34 PM",
+      endTime: "5:45 PM",
       isCompleted: false,
     },
     {
       icon: require('../../../assets/task_Icons/meet.png'),
       tittle: 'Out with friends',
       description: '',
-      time: '',
+       category: "Social",
+      date: "24 September 2024 , Tuesday",
+      startTime: "3:34 PM",
+      endTime: "5:45 PM",
       isCompleted: false,
     },
   ];
+
+
+
   const renderTasks = ({index, item}) => {
     // console.log("item : ",item);
 
@@ -153,14 +241,24 @@ const IncompleteTask = ({route}) => {
     <View style ={{backgroundColor: "#ECF4FD" , height: "100%" ,}}>
      {/* Task List */}
      <View style={{flex: 1}}>
-        <FlatList
+       
+       {
+       
+       taskData.length > 0 ?
+       <FlatList
           // data={[1, 2, 3, 4, 56, 7, 2, 3, 4, 56, 7]}
 
           data={taskData}
           renderItem={renderTasks}
           ListFooterComponent={<View style={{height: 60}} />}
-        />
-      </View>
+        />: 
+        
+           <View style={{marginVertical: '18%', justifyContent: 'center'}}>
+             <NoTaskAvailable isPending = {true}/>
+           </View>
+       
+       }  
+        </View>
      
     </View>
   )

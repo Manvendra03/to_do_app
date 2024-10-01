@@ -2,25 +2,32 @@ export  function getImageWithCategory(category){
     
     switch (category)
     {
-        case 'Development': 
-             return require('../assets/task_Icons/eat.png');
+        case 'Education': 
+             return require('../assets/task_Icons/book.png');
              
         case 'Shopping': 
              return require('../assets/task_Icons/cart.png');
         
-        case 'Meeting': 
+        case 'Fitness': 
+             return require('../assets/task_Icons/dumbbell.png');
+             
+        case 'Work': 
+             return require('../assets/task_Icons/business.png');
+        
+        case 'Social': 
              return require('../assets/task_Icons/meet.png');
              
-        case 'Design': 
-        return require('../assets/task_Icons/brush.png');
         
-        case 'Business': 
-             return require('../assets/task_Icons/business.png');
-             
-        case 'Learning': 
-        return require('../assets/task_Icons/book.png');
+        case 'Meeting': 
+             return require('../assets/task_Icons/meet.png');
+                  
+        case 'Meal': 
+             return require('../assets/task_Icons/eat.png');
         
         case 'Other': 
              return require('../assets/task_Icons/other.png');
+             
+        case 'Appointment': 
+            return require('../assets/task_Icons/appointment.png');
     }
 }

@@ -24,6 +24,7 @@ const TabNavigation = () => {
     <View style={{height: '100%', backgroundColor: 'white', width: '100%'}}>
       <AppBar tittle={'All Task'} />
       <Tab.Navigator 
+          initialRouteName='Pending'
           screenOptions={{
             tabBarIndicatorStyle: { backgroundColor: '#1E368A' },  // Set the indicator color here
             tabBarActiveTintColor: '#1E368A',  // Set active text color
@@ -32,10 +33,10 @@ const TabNavigation = () => {
             // Adjust tab bar position
           }}
         
-          style={{top: -10 }} >
-        <Tab.Screen name="All Task" component={AllTask}  initialParams={{setSelectedTask: setSelectedTask ,setShowTask: setShowTask}}/>
-        <Tab.Screen name="Finished" component={CompleteTask} initialParams={{setSelectedTask: setSelectedTask ,setShowTask: setShowTask}}/>
-        <Tab.Screen name="Pending" component={IncompleteTask} initialParams={{setSelectedTask: setSelectedTask ,setShowTask: setShowTask}}/>
+          style={{ }} >
+        <Tab.Screen name="All Task   [99]" component={AllTask}  initialParams={{setSelectedTask: setSelectedTask ,setShowTask: setShowTask}}/>
+        <Tab.Screen name="Pending   [99]" component={IncompleteTask} initialParams={{setSelectedTask: setSelectedTask ,setShowTask: setShowTask}}/>
+        <Tab.Screen name="Finished   [99]" component={CompleteTask} initialParams={{setSelectedTask: setSelectedTask ,setShowTask: setShowTask}}/>
       </Tab.Navigator>
 
 

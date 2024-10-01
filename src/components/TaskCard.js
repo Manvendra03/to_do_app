@@ -53,11 +53,11 @@ const TaskCard = ({index,item,setShowTask ,setSelectedTask}) => {
             <Text style={{fontSize: 18, fontWeight: '600', color: 'black'}}>
               {item.tittle}
             </Text>
-            <Text style={{fontSize: 13, fontWeight: '600', color: '#bababa'}}>
+            <Text style={{fontSize: 13, fontWeight: '600', color:   item.isCompleted != true ? '#bababa' : "#38AF48"}}>
              
              {
               //is completed !! item.iscomplted ?
-              true ?  item.startTime + " - "+item.startTime
+              item.isCompleted != true ?  item.startTime + " - "+item.startTime
               : "completed"
              }
               

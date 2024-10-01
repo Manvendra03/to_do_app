@@ -14,14 +14,15 @@ import TimeSelector from '../components/TimeSelector';
 import Modal from 'react-native-modal';
 import {FormButton} from '../screens/HomeScreen';
 import DatePicker from 'react-native-date-picker';
-import {getDayFromIndex, getMonthFromIndex, getTimeFromHoursAndMinutes} from '../Functions/pickerFunctions';
+import {checkStartandEndTime, convertDateStringToDate, getDayFromIndex, getMonthFromIndex, getTimeFromHoursAndMinutes} from '../Functions/pickerFunctions';
 
 
 const EditModel = ({setShowTask,taskobject}) => {
 
    
   const [isEdit , setIsEdit] = useState(false);
-   
+  
+  const [isCompleted , setIsCompleted] = useState(taskobject.isCompleted ?? false )
   
   //Variables for Form
   
@@ -33,6 +34,9 @@ const EditModel = ({setShowTask,taskobject}) => {
   // variable used for DatePicker  
   const [date, setDate] = useState(new Date());
   const [dateOpener, setDateOpener] = useState(false);
+
+  const [defaultDate,setDefaultDate] = useState(convertDateStringToDate(taskobject.date)); // Convert string to Date
+
 
   //setting default value for DateField
   // var CurrentDate =
@@ -46,6 +50,13 @@ const EditModel = ({setShowTask,taskobject}) => {
 
   const [dateString, setDateString] = useState(taskobject.date);
 
+  const currentDatee = new Date();
+  const startOfMonth = new Date(currentDatee.getFullYear(), currentDatee.getMonth(), currentDatee.getDate()); // First day of current month
+  const endOfMonth = new Date(currentDatee.getFullYear(), 11, 0); // Last day of current month
+
+
+  
+  
 
 
   // Variable used for TimePicker
@@ -65,144 +76,7 @@ const EditModel = ({setShowTask,taskobject}) => {
   const [openStartTime, setOpenStartTime] = useState(false);
 
   return (
-    // <View
-    //   style={{
-    //     // height: '100%',
-    //     width: '95%',
-    //     justifyContent: 'center',
-    //     alignItems: 'center',
-    //     alignSelf: "center",
-    //     opacity: 1,
-    //     position: 'absolute',
-    //   }}>
-    //   <View
-    //     style={{
-    //       height: 550,
-    //       backgroundColor: 'white',
-    //       borderRadius: 10,
-    //       paddingHorizontal: 20,
-    //       paddingTop: 40,
-    //     }}>
-    //    <TouchableOpacity style ={{  position: 'absolute',
-    //         right: 10,
-    //         backgroundColor: "#ECF4FD",
-    //         height: 25,
-    //         width: 25,
-    //         borderRadius: 20,
-    //         alignItems: "center",
-    //         justifyContent: "center",
-    //         top: 10,
-    //       }}
-    //       onPress={()=>{setShowTask(false)}}
-    //       >
-    //    <Image
-    //       source={require('../assets/close.png')}
-    //       style={{
-    //         height: 10,
-    //         width: 10,
-    //         tintColor: "grey"
-    //       }}
-    //     />
-    //    </TouchableOpacity>
-    //     <Text style={styles.heading}>Task Tittle</Text>
-
-    //     <TextInput
-    //       style={styles.input}
-    //       onChangeText={data => {
-    //         setTittle(data);
-    //       }}
-    //       // value={number}
-    //       placeholder="UI Design"
-    //     />
-
-    //     <Text style={styles.heading}>Date & Time</Text>
-
-    //     <View
-    //       style={{
-    //         height: 50,
-    //         marginVertical: 10,
-    //         paddingHorizontal: 20,
-    //         borderColor: '#E3E4F9',
-    //         borderRadius: 10,
-    //         borderWidth: 1.5,
-    //         padding: 10,
-    //         justifyContent: 'center',
-    //         alignItems: 'start',
-    //         marginBottom: 15,
-    //       }}>
-    //       <Text>17 June 2024 , Tuesday</Text>
-    //       {/* <Text>{dateString}</Text> */}
-
-    //       <TouchableOpacity
-    //         onPress={() => {
-    //           // setOpenDate(true);
-    //         }}
-    //         style={{
-    //           right: 0,
-    //           position: 'absolute',
-    //           height: 48,
-    //           width: 48,
-    //           justifyContent: 'center',
-    //           borderRadius: 8,
-    //           alignItems: 'center',
-    //           backgroundColor: '#ECF4FD',
-    //         }}>
-    //         <Image
-    //           source={require('../assets/calender.png')}
-    //           style={{height: 25, width: 25, tintColor: '#3787EB'}}
-    //         />
-    //       </TouchableOpacity>
-    //     </View>
-
-    //     <View
-    //       style={{
-    //         flexDirection: 'row',
-    //         width: '100%',
-    //         justifyContent: 'space-evenly',
-    //       }}>
-    //       <View style={{flex: 2, marginHorizontal: 15}}>
-    //         <Text style={[styles.heading, {fontSize: 16}]}>Start Time</Text>
-    //         <TimeSelector
-    //         // setOpen={setOpenTime}
-    //         // time={startTime}
-    //         // isStart={true}
-    //         // setIsStartTimer={setIsStartTimer}
-    //         />
-    //       </View>
-    //       <View style={{flex: 2, marginHorizontal: 15}}>
-    //         <Text style={[styles.heading, {fontSize: 16}]}>End Time</Text>
-    //         <TimeSelector
-    //         // setOpen={setOpenTime}
-    //         // time={endTime}
-    //         // isStart={false}
-    //         // setIsStartTimer={setIsStartTimer}
-    //         />
-    //       </View>
-    //     </View>
-
-    //     <Text style={styles.heading}>Description</Text>
-
-    //     <TextInput
-    //       style={[styles.input, {height: 80, textAlignVertical: 'top'}]}
-    //       multiline={true}
-    //       onChangeText={data => {
-    //         // setDescription(data);
-    //       }}
-    //     />
-
-    //     <View
-    //       style={{
-    //         flexDirection: 'row',
-    //         justifyContent: 'space-evenly',
-    //         position: 'absolute',
-    //         bottom: 10,
-    //         alignSelf: 'center',
-    //       }}>
-    //       <FormButton bgcolor="red" tittle={'Delete'}  func ={ ()=>{setShowTask(false)}}/>
-    //       <FormButton bgcolor="green" tittle={'Done'} func ={ ()=>{setShowTask(false)}}/>
-    //     </View>
-    //   </View>
-    // </View>
+    
     <View
       style={{
         height: '100%',
@@ -248,38 +122,38 @@ const EditModel = ({setShowTask,taskobject}) => {
           />
         </TouchableOpacity>
          {
-        !isEdit? 
-        <TouchableOpacity
-          style={{
-            position: 'absolute',
-            right: 40,
-            backgroundColor: '#1E368A',
-            height: 25,
-            paddingHorizontal: 10,
-            borderRadius: 5,
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexDirection: 'row',
-
-            top: 10,
-          }}
-          onPress={() => {
-            // setShowTask(false);
-            setIsEdit(!isEdit);
-          }}>
-          <Image
-            source={require('../assets/pencil.png')}
-            style={{
-              height: 10,
-              width: 10,
-              tintColor: 'white',
-            }}
-          />
-
-          <Text style={{fontWeight: '600', marginLeft: 5, color: 'white'}}>
-            Edit
-          </Text>
-        </TouchableOpacity> : <View/>
+            isCompleted? <View/> : !isEdit? 
+            <TouchableOpacity
+              style={{
+                position: 'absolute',
+                right: 40,
+                backgroundColor: '#1E368A',
+                height: 25,
+                paddingHorizontal: 10,
+                borderRadius: 5,
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: 'row',
+    
+                top: 10,
+              }}
+              onPress={() => {
+                // setShowTask(false);
+                setIsEdit(!isEdit);
+              }}>
+              <Image
+                source={require('../assets/pencil.png')}
+                style={{
+                  height: 10,
+                  width: 10,
+                  tintColor: 'white',
+                }}
+              />
+    
+              <Text style={{fontWeight: '600', marginLeft: 5, color: 'white'}}>
+                Edit
+              </Text>
+            </TouchableOpacity> : <View/>
         }
         <Text style={styles.heading}>Task Tittle</Text>
 
@@ -383,6 +257,28 @@ const EditModel = ({setShowTask,taskobject}) => {
           }}
         />
  {
+
+   isCompleted ?  <TouchableOpacity style={{ 
+    height: 45,
+    borderRadius: 12,
+    alignSelf:"center",
+    justifyContent: "center",
+    alignItems:"center",
+    position:"absolute",
+    width: "90%",
+    bottom: 25,
+    backgroundColor: "red",
+   }}
+    onPress={()=>{
+      // setIsEdit(false);
+      // setShowTask(false);
+      setIsCompleted(false);
+      }} >
+    <Text style = {{fontWeight: "700" , fontSize: 18 , color: "white"}}>Mark as Incomplete</Text>
+   </TouchableOpacity>:
+
+
+
         !isEdit ?<View
           style={{
             flexDirection: 'row',
@@ -418,12 +314,14 @@ const EditModel = ({setShowTask,taskobject}) => {
           alignItems:"center",
           position:"absolute",
           width: "90%",
-          bottom: 15,
+          bottom: 25,
           backgroundColor: "#1E368A",
          }}
           onPress={()=>{
             // setIsEdit(false);
-            setShowTask(false);
+            checkStartandEndTime(startTime , endTime);
+
+            // setShowTask(false);
             }} >
           <Text style = {{fontWeight: "700" , fontSize: 20 , color: "white"}}>Save</Text>
          </TouchableOpacity>
@@ -434,10 +332,15 @@ const EditModel = ({setShowTask,taskobject}) => {
           mode="date"
           locale="In"
           open={dateOpener}
-          date={date}
+          date={defaultDate}
+
+          minimumDate={startOfMonth} // Minimum date: First day of the current month
+          maximumDate={endOfMonth}
+          
           onConfirm={data => {
             setDateOpener(false);
-            setDate(data);
+            // setDate(data);
+            setDefaultDate(data);
             // console.log( "month",getMonthFromIndex(data.getMonth()));
             // console.log("day",getDayFromIndex(data.getDay()));
             // console.log("date",data.getDate());
