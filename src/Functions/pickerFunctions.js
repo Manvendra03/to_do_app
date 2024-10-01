@@ -117,49 +117,49 @@ export function getTimeFromHoursAndMinutes(hours, minutes)
 } 
 
 
-export function checkStartandEndTime (startTime, endTime , showWarning){
-  //  Check if startTime and endTime are set
-  if (!startTime || !endTime) {
-    alert('Please set both start and end times.');
-    return;
-  }
+// export function checkStartandEndTime (startTime, endTime , showWarning){
+//   //  Check if startTime and endTime are set
+//   if (!startTime || !endTime) {
+//     alert('Please set both start and end times.');
+//     return;
+//   }
 
-  // Parse start time
-  const [startHour, startMinutePart] = startTime.split(':');
-  const [startMinute, startPeriod] = startMinutePart.trim().split(' ');
+//   // Parse start time
+//   const [startHour, startMinutePart] = startTime.split(':');
+//   const [startMinute, startPeriod] = startMinutePart.trim().split(' ');
 
-  const startTimeDate = new Date();
-  startTimeDate.setHours(
-    startPeriod.toUpperCase() === 'PM' && parseInt(startHour, 10) < 12
-      ? parseInt(startHour, 10) + 12
-      : startPeriod.toUpperCase() === 'AM' && parseInt(startHour, 10) === 12
-      ? 0
-      : parseInt(startHour, 10),
-  );
-  startTimeDate.setMinutes(parseInt(startMinute, 10));
+//   const startTimeDate = new Date();
+//   startTimeDate.setHours(
+//     startPeriod.toUpperCase() === 'PM' && parseInt(startHour, 10) < 12
+//       ? parseInt(startHour, 10) + 12
+//       : startPeriod.toUpperCase() === 'AM' && parseInt(startHour, 10) === 12
+//       ? 0
+//       : parseInt(startHour, 10),
+//   );
+//   startTimeDate.setMinutes(parseInt(startMinute, 10));
 
-  // Parse end time
-  const [endHour, endMinutePart] = endTime.split(':');
-  const [endMinute, endPeriod] = endMinutePart.trim().split(' ');
+//   // Parse end time
+//   const [endHour, endMinutePart] = endTime.split(':');
+//   const [endMinute, endPeriod] = endMinutePart.trim().split(' ');
 
-  const endTimeDate = new Date();
-  endTimeDate.setHours(
-    endPeriod.toUpperCase() === 'PM' && parseInt(endHour, 10) < 12
-      ? parseInt(endHour, 10) + 12
-      : endPeriod.toUpperCase() === 'AM' && parseInt(endHour, 10) === 12
-      ? 0
-      : parseInt(endHour, 10),
-  );
-  endTimeDate.setMinutes(parseInt(endMinute, 10));
+//   const endTimeDate = new Date();
+//   endTimeDate.setHours(
+//     endPeriod.toUpperCase() === 'PM' && parseInt(endHour, 10) < 12
+//       ? parseInt(endHour, 10) + 12
+//       : endPeriod.toUpperCase() === 'AM' && parseInt(endHour, 10) === 12
+//       ? 0
+//       : parseInt(endHour, 10),
+//   );
+//   endTimeDate.setMinutes(parseInt(endMinute, 10));
 
-  // Check if start time is less than end time
-  if (startTimeDate.getTime() < endTimeDate.getTime()) {
-    // Proceed with creating the timer or any desired action
-    console.log('Start time is valid. Proceeding...');
-    // Your code to create the timer here
-  } else {
-    // Alert the user about the invalid time
-    // alert('Invalid time: Start time must be less than End time.');
-    showWarning(true);
-  }
-};
+//   // Check if start time is less than end time
+//   if (startTimeDate.getTime() < endTimeDate.getTime()) {
+//     // Proceed with creating the timer or any desired action
+//     console.log('Start time is valid. Proceeding...');
+//     // Your code to create the timer here
+//   } else {
+//     // Alert the user about the invalid time
+//     // alert('Invalid time: Start time must be less than End time.');
+//     showWarning(true);
+//   }
+// };

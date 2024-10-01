@@ -211,9 +211,9 @@ const IncompleteTask = ({route}) => {
           <Text style={{fontSize: 18,marginTop: 5, fontWeight: '600', color: 'black'}}>
             {item.tittle}
           </Text>
-          <Text style={{fontSize: 13, fontWeight: '600', color: '#bababa'}}>
-            09:00 AM - 11:00 AM
-          </Text>
+          <Text style={{fontSize: 12, fontWeight: '600', marginTop: 2, color:  "#FF3500"}}>
+            Incomplete
+              </Text>
          
         </View>
 

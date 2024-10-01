@@ -9,34 +9,44 @@ import {
   Image,
   TextInput,
 } from 'react-native';
+
 import React, {useState} from 'react';
+import CheckBox from 'react-native-check-box';
 import TimeSelector from '../components/TimeSelector';
 import Modal from 'react-native-modal';
 import {FormButton} from '../screens/HomeScreen';
 import DatePicker from 'react-native-date-picker';
-import {checkStartandEndTime, convertDateStringToDate, getDayFromIndex, getMonthFromIndex, getTimeFromHoursAndMinutes} from '../Functions/pickerFunctions';
+import WarningModal from '../components/WarningModel';
+import {
+  checkStartandEndTime,
+  convertDateStringToDate,
+  getDayFromIndex,
+  getMonthFromIndex,
+  getTimeFromHoursAndMinutes,
+} from '../Functions/pickerFunctions';
 
+const EditModel = ({setShowTask, taskobject}) => {
+  const [isEdit, setIsEdit] = useState(false);
 
-const EditModel = ({setShowTask,taskobject}) => {
-
-   
-  const [isEdit , setIsEdit] = useState(false);
-  
-  const [isCompleted , setIsCompleted] = useState(taskobject.isCompleted ?? false )
-  
+  const [isCompleted, setIsCompleted] = useState(
+    taskobject.isCompleted ?? false,
+  );
+  const [showTittleWarning, setShowTittleWarning] = useState(false);
+  const [showPastWarning, setShowPastWarning] = useState(false);
   //Variables for Form
-  
+
   const [tittle, setTittle] = useState(taskobject.tittle);
   const [description, setDescription] = useState(taskobject.description);
 
+  const [ischecked, setIsChecked] = useState(true);
 
-
-  // variable used for DatePicker  
+  // variable used for DatePicker
   const [date, setDate] = useState(new Date());
   const [dateOpener, setDateOpener] = useState(false);
 
-  const [defaultDate,setDefaultDate] = useState(convertDateStringToDate(taskobject.date)); // Convert string to Date
-
+  const [defaultDate, setDefaultDate] = useState(
+    convertDateStringToDate(taskobject.date),
+  ); // Convert string to Date
 
   //setting default value for DateField
   // var CurrentDate =
@@ -51,13 +61,12 @@ const EditModel = ({setShowTask,taskobject}) => {
   const [dateString, setDateString] = useState(taskobject.date);
 
   const currentDatee = new Date();
-  const startOfMonth = new Date(currentDatee.getFullYear(), currentDatee.getMonth(), currentDatee.getDate()); // First day of current month
+  const startOfMonth = new Date(
+    currentDatee.getFullYear(),
+    currentDatee.getMonth(),
+    currentDatee.getDate(),
+  ); // First day of current month
   const endOfMonth = new Date(currentDatee.getFullYear(), 11, 0); // Last day of current month
-
-
-  
-  
-
 
   // Variable used for TimePicker
   //setting default time for Start and end
@@ -68,15 +77,13 @@ const EditModel = ({setShowTask,taskobject}) => {
 
   const [time, setTime] = useState(new Date());
 
-
   const [startTime, setStartTime] = useState(taskobject.startTime);
   const [endTime, setEndTime] = useState(taskobject.endTime);
-  
+
   const [isStartTimer, setIsStartTimer] = useState(true);
   const [openStartTime, setOpenStartTime] = useState(false);
 
   return (
-    
     <View
       style={{
         height: '100%',
@@ -121,46 +128,49 @@ const EditModel = ({setShowTask,taskobject}) => {
             }}
           />
         </TouchableOpacity>
-         {
-            isCompleted? <View/> : !isEdit? 
-            <TouchableOpacity
+        {isCompleted ? (
+          <View />
+        ) : !isEdit ? (
+          <TouchableOpacity
+            style={{
+              position: 'absolute',
+              right: 40,
+              backgroundColor: '#1E368A',
+              height: 25,
+              paddingHorizontal: 10,
+              borderRadius: 5,
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexDirection: 'row',
+
+              top: 10,
+            }}
+            onPress={() => {
+              // setShowTask(false);
+              setIsEdit(!isEdit);
+            }}>
+            <Image
+              source={require('../assets/pencil.png')}
               style={{
-                position: 'absolute',
-                right: 40,
-                backgroundColor: '#1E368A',
-                height: 25,
-                paddingHorizontal: 10,
-                borderRadius: 5,
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexDirection: 'row',
-    
-                top: 10,
+                height: 10,
+                width: 10,
+                tintColor: 'white',
               }}
-              onPress={() => {
-                // setShowTask(false);
-                setIsEdit(!isEdit);
-              }}>
-              <Image
-                source={require('../assets/pencil.png')}
-                style={{
-                  height: 10,
-                  width: 10,
-                  tintColor: 'white',
-                }}
-              />
-    
-              <Text style={{fontWeight: '600', marginLeft: 5, color: 'white'}}>
-                Edit
-              </Text>
-            </TouchableOpacity> : <View/>
-        }
+            />
+
+            <Text style={{fontWeight: '600', marginLeft: 5, color: 'white'}}>
+              Edit
+            </Text>
+          </TouchableOpacity>
+        ) : (
+          <View />
+        )}
         <Text style={styles.heading}>Task Tittle</Text>
 
         <TextInput
-          style={[styles.input, {color : isEdit? "black":"#bababa"}]}
-         value={tittle}
-          editable = {isEdit}
+          style={[styles.input, {color: isEdit ? 'black' : '#bababa'}]}
+          value={tittle}
+          editable={isEdit}
           // placeholderTextColor= {isEdit ? 'black':"#bababa"}
           onChangeText={data => {
             setTittle(data);
@@ -184,15 +194,16 @@ const EditModel = ({setShowTask,taskobject}) => {
             alignItems: 'start',
             marginBottom: 15,
           }}>
-          <Text style = {{color: isEdit? "black" : "#bababa"}}>{dateString}</Text>
+          <Text style={{color: isEdit ? 'black' : '#bababa'}}>
+            {dateString}
+          </Text>
 
           <TouchableOpacity
             onPress={() => {
               // setOpenDate(true);
               setDateOpener(true);
             }}
-
-            disabled = {!isEdit}
+            disabled={!isEdit}
             style={{
               right: 0,
               position: 'absolute',
@@ -201,7 +212,7 @@ const EditModel = ({setShowTask,taskobject}) => {
               justifyContent: 'center',
               borderRadius: 8,
               alignItems: 'center',
-              backgroundColor: isEdit ? '#ECF4FD' : "#f1f1f1",
+              backgroundColor: isEdit ? '#ECF4FD' : '#f1f1f1',
             }}>
             <Image
               source={require('../assets/calender.png')}
@@ -209,7 +220,7 @@ const EditModel = ({setShowTask,taskobject}) => {
                 height: 25,
                 width: 25,
                 //  tintColor: 'grey' ,
-                tintColor: isEdit? '#1E368A' : "grey",
+                tintColor: isEdit ? '#1E368A' : 'grey',
               }}
             />
           </TouchableOpacity>
@@ -224,21 +235,33 @@ const EditModel = ({setShowTask,taskobject}) => {
           <View style={{flex: 2, marginHorizontal: 15}}>
             <Text style={[styles.heading, {fontSize: 16}]}>Start Time</Text>
             <TimeSelector
-            setOpen={setOpenStartTime}
-            time={startTime}
-            isEdit={isEdit}
-            isStart={true}
-            setIsStartTimer={setIsStartTimer}
+              setOpen={setOpenStartTime}
+              time={startTime}
+              isEdit={isEdit}
+              isStart={true}
+              setIsStartTimer={setIsStartTimer}
             />
           </View>
+
           <View style={{flex: 2, marginHorizontal: 15}}>
-            <Text style={[styles.heading, {fontSize: 16}]}>End Time</Text>
+            <CheckBox
+              disabled={!isEdit}
+              style={{marginLeft: 5}}
+              onClick={() => {
+                setIsChecked(!ischecked);
+              }}
+              isChecked={ischecked}
+              checkedCheckBoxColor={isEdit ? '#1E368A' : 'grey'}
+              rightText={'Set Alarm'}
+              rightTextStyle={[styles.heading, {fontSize: 16, marginLeft: 5}]}
+            />
             <TimeSelector
-             setOpen={setOpenStartTime}
-             time={endTime}
-             isEdit={isEdit}
-             isStart={false}
-             setIsStartTimer={setIsStartTimer}
+              setOpen={setOpenStartTime}
+              time={endTime}
+              isEdit={isEdit}
+              ischecked={ischecked}
+              isStart={false}
+              setIsStartTimer={setIsStartTimer}
             />
           </View>
         </View>
@@ -246,7 +269,14 @@ const EditModel = ({setShowTask,taskobject}) => {
         <Text style={styles.heading}>Description</Text>
 
         <TextInput
-          style={[styles.input, {height: 80, textAlignVertical: 'top' , color: isEdit?"black":"#bababa"}]}
+          style={[
+            styles.input,
+            {
+              height: 80,
+              textAlignVertical: 'top',
+              color: isEdit ? 'black' : '#bababa',
+            },
+          ]}
           multiline={true}
           editable={isEdit}
           value={description}
@@ -256,76 +286,77 @@ const EditModel = ({setShowTask,taskobject}) => {
             setDescription(data);
           }}
         />
- {
-
-   isCompleted ?  <TouchableOpacity style={{ 
-    height: 45,
-    borderRadius: 12,
-    alignSelf:"center",
-    justifyContent: "center",
-    alignItems:"center",
-    position:"absolute",
-    width: "90%",
-    bottom: 25,
-    backgroundColor: "red",
-   }}
-    onPress={()=>{
-      // setIsEdit(false);
-      // setShowTask(false);
-      setIsCompleted(false);
-      }} >
-    <Text style = {{fontWeight: "700" , fontSize: 18 , color: "white"}}>Mark as Incomplete</Text>
-   </TouchableOpacity>:
-
-
-
-        !isEdit ?<View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-evenly',
-            position: 'absolute',
-            bottom: 10,
-            alignSelf: 'center',
-          }}>
-          <FormButton
-            bgcolor="red"
-            tittle={'Remove'}
-            func={() => {
-              setShowTask(false);
+        {isCompleted ? (
+          <TouchableOpacity
+            style={{
+              height: 45,
+              borderRadius: 12,
+              alignSelf: 'center',
+              justifyContent: 'center',
+              alignItems: 'center',
+              position: 'absolute',
+              width: '90%',
+              bottom: 25,
+              backgroundColor: 'red',
             }}
-          />
-          <FormButton
-            bgcolor="green"
-            tittle={'Completed'}
-            func={() => {
-              
-
-              setShowTask(false);
-
+            onPress={() => {
+              // setIsEdit(false);
+              // setShowTask(false);
+              setIsCompleted(false);
+            }}>
+            <Text style={{fontWeight: '700', fontSize: 18, color: 'white'}}>
+              Mark as Incomplete
+            </Text>
+          </TouchableOpacity>
+        ) : !isEdit ? (
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-evenly',
+              position: 'absolute',
+              bottom: 10,
+              alignSelf: 'center',
+            }}>
+            <FormButton
+              bgcolor="red"
+              tittle={'Remove'}
+              func={() => {
+                setShowTask(false);
+              }}
+            />
+            <FormButton
+              bgcolor="green"
+              tittle={'Completed'}
+              func={() => {
+                setShowTask(false);
+              }}
+            />
+          </View>
+        ) : (
+          <TouchableOpacity
+            style={{
+              height: 45,
+              borderRadius: 15,
+              alignSelf: 'center',
+              justifyContent: 'center',
+              alignItems: 'center',
+              position: 'absolute',
+              width: '90%',
+              bottom: 25,
+              backgroundColor: '#1E368A',
             }}
-          />
-        </View>
-:
-         <TouchableOpacity style={{ 
-          height: 45,
-          borderRadius: 15,
-          alignSelf:"center",
-          justifyContent: "center",
-          alignItems:"center",
-          position:"absolute",
-          width: "90%",
-          bottom: 25,
-          backgroundColor: "#1E368A",
-         }}
-          onPress={()=>{
-            // setIsEdit(false);
-            checkStartandEndTime(startTime , endTime);
-
-            // setShowTask(false);
-            }} >
-          <Text style = {{fontWeight: "700" , fontSize: 20 , color: "white"}}>Save</Text>
-         </TouchableOpacity>
- }
+            onPress={() => {
+              if (tittle === '') {
+                setShowTittleWarning(true);
+              } else {
+                setShowTask(false);
+              }
+            }}>
+            <Text style={{fontWeight: '700', fontSize: 20, color: 'white'}}>
+              Save
+            </Text>
+          </TouchableOpacity>
+        )}
         {/*     DATE PICKERR     */}
         <DatePicker
           modal
@@ -333,10 +364,8 @@ const EditModel = ({setShowTask,taskobject}) => {
           locale="In"
           open={dateOpener}
           date={defaultDate}
-
           minimumDate={startOfMonth} // Minimum date: First day of the current month
           maximumDate={endOfMonth}
-          
           onConfirm={data => {
             setDateOpener(false);
             // setDate(data);
@@ -371,29 +400,59 @@ const EditModel = ({setShowTask,taskobject}) => {
           date={date}
           time={time}
           onConfirm={data => {
+            const currentTime = new Date();
+            const selectedTime = new Date(currentTime);
+
+            // Set the selected time hours and minutes
+            selectedTime.setHours(data.getHours());
+            selectedTime.setMinutes(data.getMinutes());
+
             setOpenStartTime(false);
             console.log(data.getHours());
             console.log(data.getMinutes());
 
-            isStartTimer
-              ? setStartTime(
-                  getTimeFromHoursAndMinutes(
-                    data.getHours(),
-                    data.getMinutes(),
-                  ),
-                )
-              : setEndTime(
+            setIsStartTimer(false);
+            if (isStartTimer) {
+              // if timer is startTimer
+              if (selectedTime.getTime() > currentTime.getTime()) {
+                // If it's for the start timer, just set the start time
+                setStartTime(
                   getTimeFromHoursAndMinutes(
                     data.getHours(),
                     data.getMinutes(),
                   ),
                 );
+              } else {
+                setShowPastWarning(true);
+              }
+              setIsStartTimer(false);
+            } else {
+              // If Timer is alerm
+              setEndTime(
+                getTimeFromHoursAndMinutes(data.getHours(), data.getMinutes()),
+              );
+            }
 
-            setIsStartTimer(false);
             // setStartTime(date);
           }}
           onCancel={() => {
             setOpenStartTime(false);
+          }}
+        />
+        <WarningModal
+          visible={showTittleWarning}
+          title={'Invaild Input'}
+          description={'Tittle must not be empty'}
+          onOkPress={() => {
+            setShowTittleWarning(false);
+          }}
+        />
+        <WarningModal
+          visible={showPastWarning}
+          title={'Invaild Input'}
+          description={'Choose a valid future time.'}
+          onOkPress={() => {
+            setShowPastWarning(false);
           }}
         />
       </View>
@@ -416,7 +475,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '400',
     color: 'black',
-    
   },
   buttonStyle: {
     height: 55,

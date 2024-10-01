@@ -57,7 +57,9 @@ const TaskCard = ({index,item,setShowTask ,setSelectedTask}) => {
              
              {
               //is completed !! item.iscomplted ?
-              item.isCompleted != true ?  item.startTime + " - "+item.startTime
+              // item.isCompleted != true ?  item.startTime + " - "+item.startTime
+              item.isCompleted != true ? "started at "+ item.startTime 
+
               : "completed"
              }
               

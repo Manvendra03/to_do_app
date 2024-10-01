@@ -12,7 +12,7 @@ import {
   } from 'react-native';
   import React, {useState} from 'react';
 
-const TimeSelector = ({setOpen , time , isStart,setIsStartTimer , isEdit = true}) => {
+const TimeSelector = ({setOpen , time , isStart,setIsStartTimer , isEdit = true , ischecked}) => {
   return (
     <View
             style={{
@@ -27,13 +27,14 @@ const TimeSelector = ({setOpen , time , isStart,setIsStartTimer , isEdit = true}
               alignItems: 'start',
               marginBottom: 25,
             }}>
-            <Text style = {{color: isEdit? "black" : "#bababa"}}>{time}</Text>
+            <Text style = {{color: isEdit? "black" : "#bababa"}}>{isStart ? time : ischecked ? time : ""}</Text>
             <TouchableOpacity
+            
               onPress={() => {
                 setOpen(true);
                 isStart ? setIsStartTimer(true) :setIsStartTimer(false);
               }}
-              disabled = {!isEdit}
+              disabled = {isStart ?!isEdit :  !(isEdit && ischecked)}
               style={{
                 right: 0,
                 position: 'absolute',
@@ -42,17 +43,17 @@ const TimeSelector = ({setOpen , time , isStart,setIsStartTimer , isEdit = true}
                 justifyContent: 'center',
                 borderRadius: 8,
                 alignItems: 'center',
-                backgroundColor: isEdit ?  '#ECF4FD' : "#f1f1f1",
+                backgroundColor: isStart ? isEdit ?  '#ECF4FD' : "#f1f1f1" : isEdit && ischecked ? "#ECF4FD" : "#f1f1f1",
 
               }}>
               <Image
-                source={require('../assets/arrow_icon.png')}
+                source={ isStart ? require('../assets/arrow_icon.png') : require('../assets/alarm-clock.png')}
                 style={{
                   height: 25,
                   width: 25,
-                  tintColor: isEdit? '#1E368A' :'grey',
+                  tintColor: isStart? isEdit? '#1E368A' :'grey' : isEdit && ischecked? '#1E368A' :'grey',
                   // tintColor: '#1E368A' ,
-                  transform: [{rotate: '90deg'}],
+                  transform: isStart ? [{rotate: '90deg'}] : [],
                 }}
               />
             </TouchableOpacity>

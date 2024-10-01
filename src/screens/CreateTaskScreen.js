@@ -14,12 +14,13 @@ import {
 } from 'react-native';
 
 import {
-  checkStartandEndTime,
   getDayFromIndex,
   getMonthFromIndex,
   getTimeFromHoursAndMinutes,
 } from '../Functions/pickerFunctions';
 import React, {useState} from 'react';
+
+import CheckBox from 'react-native-check-box';
 import DatePicker from 'react-native-date-picker';
 import TimeSelector from '../components/TimeSelector';
 import {NavigationRouteContext} from '@react-navigation/native';
@@ -56,23 +57,25 @@ const CreateTaskScreen = ({navigation}) => {
   );
 
   const [time, setTime] = useState(new Date());
-  const [startTime, setStartTime] = useState( CurrentTime);
 
-  const [endTime, setEndTime] = useState(CurrentTime);
+  const [startTime, setStartTime] = useState(CurrentTime);
+  const [alarmTime, setAlarmTime] = useState(CurrentTime);
 
   const [openTime, setOpenTime] = useState(false);
 
   const [category, setCategory] = useState('Education');
 
   const [isStartTimer, setIsStartTimer] = useState(true);
+  const [ischecked , setIsChecked] = useState(false);
 
   const [tittle, setTittle] = useState('');
   const [description, setDescription] = useState('');
 
-  const [showPastWarning, setShowPastWarning] = useState(false); 
-  const [showEndTimeWarning, setShowEndTimeWarning] = useState(false);
-  
-  const [finalCheckWarning, setFinalCheckWarning] = useState(false);
+  const[showTittleWarning,setShowTittleWarning] = useState(false);
+  const [showPastWarning, setShowPastWarning] = useState(false);
+  // const [showEndTimeWarning, setShowEndTimeWarning] = useState(false);
+
+  // const [finalCheckWarning, setFinalCheckWarning] = useState(false);
 
   const categories = [
     {id: '1', title: 'Education'},
@@ -90,7 +93,6 @@ const CreateTaskScreen = ({navigation}) => {
 
   const myHeight = Dimensions.get('window').height;
 
-  
   // console.log(myHeight);
   return (
     <View style={{height: '100%', width: '100%', backgroundColor: '#ffffff'}}>
@@ -202,19 +204,24 @@ const CreateTaskScreen = ({navigation}) => {
               />
             </View>
             <View style={{flex: 2, marginHorizontal: 15}}>
-              <Text style={[styles.heading, {fontSize: 16}]}>End Time</Text>
+              <CheckBox
+                style={{ marginLeft : 5 }}
+                onClick={() => { setIsChecked(!ischecked)}}
+                isChecked={ischecked}
+                checkedCheckBoxColor = {"#1E368A"}
+                rightText={'Set Alarm'}
+                rightTextStyle = {[styles.heading, {fontSize: 16 , marginLeft: 5 }]}
+              />
               <TimeSelector
                 setOpen={setOpenTime}
-                time={endTime}
+                time={alarmTime}
                 isStart={false}
+                ischecked={ischecked}
                 setIsStartTimer={setIsStartTimer}
               />
             </View>
-            {
-            finalCheckWarning ? <Text style = {{position: "absolute", bottom: 5,marginHorizontal: 20, fontSize: 12, color: "red" , width: "100%"}}>** End time must be after the start time ** </Text>  
-:<View/>}
           </View>
-          <Text style={styles.heading}>Description</Text> 
+          <Text style={styles.heading}>Description</Text>
 
           <TextInput
             style={[
@@ -238,19 +245,28 @@ const CreateTaskScreen = ({navigation}) => {
               {marginTop: 20, marginBottom: 20},
             ]}
             onPress={() => {
-              checkStartandEndTime(startTime , endTime , setFinalCheckWarning);
-
-              var newTask = {
-                name: tittle,
-                category: category,
-                date: dateString,
-                startTime: startTime,
-                endTime: endTime,
-                description: description,
-              };
+              
+              if(tittle === "")
+              {
+                  setShowTittleWarning(true);
+              }
+              else{
+                navigation.goBack();
+            
+              }
+              
+              // var newTask = {
+              //   name: tittle,
+              //   category: category,
+              //   date: dateString,
+              //   startTime: startTime,
+              //   description: description,
+              // };
+              
+               
               //  add this tasl to database and clear all inputs
 
-              console.log('newTask Created ', newTask);
+              // console.log('newTask Created ', newTask);
             }}>
             <Text style={{fontSize: 20, fontWeight: '700', color: 'white'}}>
               Create Task
@@ -270,7 +286,7 @@ const CreateTaskScreen = ({navigation}) => {
             onConfirm={data => {
               // setFinalCheckWarning(false);
               setOpenDate(false);
-              
+
               setDate(data);
               // console.log( "month",getMonthFromIndex(data.getMonth()));
               // console.log("day",getDayFromIndex(data.getDay()));
@@ -293,8 +309,8 @@ const CreateTaskScreen = ({navigation}) => {
               setOpenDate(false);
             }}
           />
-          
-        {/* {Time Pickerrrr} */}
+
+          {/* {Time Pickerrrr} */}
           <DatePicker
             modal
             mode="time"
@@ -308,14 +324,14 @@ const CreateTaskScreen = ({navigation}) => {
               // Set the selected time hours and minutes
               selectedTime.setHours(data.getHours());
               selectedTime.setMinutes(data.getMinutes());
-              
-              setFinalCheckWarning(false);          
+
               // Close the modal in all cases to avoid crashing
               setOpenTime(false);
 
               // Compare selected time with the current time
-              if (selectedTime.getTime() > currentTime.getTime()) {
-                if (isStartTimer) {
+              if (isStartTimer) {
+                // if timer is startTimer
+                if (selectedTime.getTime() > currentTime.getTime()) {
                   // If it's for the start timer, just set the start time
                   setStartTime(
                     getTimeFromHoursAndMinutes(
@@ -324,58 +340,15 @@ const CreateTaskScreen = ({navigation}) => {
                     ),
                   );
                 } else {
-                  // If it's for the end timer, check if it's after the start time
-                  const [startHour, startMinutePart] = startTime.split(':'); // Assuming startTime is in "hh:mm A" format
-                  const [startMinute, period] = startMinutePart
-                    .trim()
-                    .split(' '); // Split to get minutes and period (AM/PM)
-
-                  // Validate that startTime is in the expected format
-                  if (!startHour || !startMinute || !period) {
-                    alert('Internal Error Occured !');
-                    return;
-                  }
-
-                  // Create a new date object for the start time
-                  const startTimeDate = new Date(currentTime);
-                  startTimeDate.setHours(
-                    period.toUpperCase() === 'PM' &&
-                      parseInt(startHour, 10) < 12
-                      ? parseInt(startHour, 10) + 12
-                      : period.toUpperCase() === 'AM' &&
-                        parseInt(startHour, 10) === 12
-                      ? 0
-                      : parseInt(startHour, 10),
-                  );
-                  startTimeDate.setMinutes(parseInt(startMinute, 10));
-
-                  // Debug: Log start time and selected time for comparison
-                  console.log(
-                    'Start Time:',
-                    startTimeDate,
-                    'Selected Time:',
-                    selectedTime,
-                  );
-
-                  // Compare selected end time with start time
-                  if (selectedTime.getTime() > startTimeDate.getTime()) {
-                    // If the end time is after the start time, proceed
-                    setEndTime(
-                      getTimeFromHoursAndMinutes(
-                        data.getHours(),
-                        data.getMinutes(),
-                      ),
-                    );
-                  } else {
-                    // If the end time is before or equal to the start time, alert the user
-                    setShowEndTimeWarning(true);
-                  }
+                  setShowPastWarning(true);
                 }
                 setIsStartTimer(false);
               } else {
-                // If selected time is in the past, alert the user
-                  setShowPastWarning(true);
-                
+                // If Timer is alerm
+                setAlarmTime(getTimeFromHoursAndMinutes(
+                  data.getHours(),
+                  data.getMinutes(),
+                ),)
               }
             }}
             onCancel={() => {
@@ -383,13 +356,25 @@ const CreateTaskScreen = ({navigation}) => {
             }}
           />
         </KeyboardAvoidingView>
-        
       </ScrollView>
 
-      <WarningModal visible = {showPastWarning} title={"Invaild Input"} description={"Choose a valid future time."} onOkPress = {()=>{setShowPastWarning(false)}}/> 
-      <WarningModal visible = {showEndTimeWarning} title={"Invaild Input"} description={"End time must be after start time."} onOkPress = {()=>{setShowEndTimeWarning(false)}}/> 
-      {/* <WarningModal visible = {finalCheckWarning} title={"Invaild Input"} description={"Start time must be less than End time."} onOkPress = {()=>{setFinalCheckWarning(false)}}/>  */}
-
+      <WarningModal
+        visible={showPastWarning}
+        title={'Invaild Input'}
+        description={'Choose a valid future time.'}
+        onOkPress={() => {
+          setShowPastWarning(false);
+        }}
+      />
+      
+      <WarningModal
+        visible={showTittleWarning}
+        title={'Invaild Input'}
+        description={'Tittle must not be empty'}
+        onOkPress={() => {
+          setShowTittleWarning(false);
+        }}
+      />
     </View>
   );
 };
