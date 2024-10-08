@@ -1,4 +1,4 @@
-export const app_name = 'Task Master';
+export const app_name = 'Task Up';
 
 export const color_combination = [
     {primary: '#FAF2FC', secoundary: '#A171BE'},
