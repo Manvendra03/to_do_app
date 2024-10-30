@@ -18,7 +18,7 @@ import {
   getMonthFromIndex,
   getTimeFromHoursAndMinutes,
 } from '../Functions/pickerFunctions';
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 
 import CheckBox from 'react-native-check-box';
 import DatePicker from 'react-native-date-picker';
@@ -26,8 +26,13 @@ import TimeSelector from '../components/TimeSelector';
 import {NavigationRouteContext} from '@react-navigation/native';
 import AppBar from '../components/AppBar';
 import WarningModal from '../components/WarningModel';
+import { BaseContext } from '../../App';
 
 const CreateTaskScreen = ({navigation}) => {
+
+  const {incompletedTaskList , addTask} = useContext(BaseContext);
+  
+
   const [date, setDate] = useState(new Date());
   const [openDate, setOpenDate] = useState(false);
 
@@ -125,7 +130,8 @@ const CreateTaskScreen = ({navigation}) => {
               setTittle(data);
             }}
             // value={number}
-            placeholder="UI Design"
+            placeholderTextColor= "grey"
+            placeholder="What's your next task?"
           />
 
           <Text style={[styles.heading, {marginTop: 8}]}>Category</Text>
@@ -229,6 +235,8 @@ const CreateTaskScreen = ({navigation}) => {
               {height: 110, textAlignVertical: 'top', flexWrap: 'wrap'},
             ]}
             multiline={true}
+            placeholder='Describe your task...'
+            placeholderTextColor={"grey"}
             returnKeyType="done" // Ensure 'Done' button appears
             // multiline={true}       // Enable multiline input
             blurOnSubmit={true} // Dismiss keyboard on 'Done' press
@@ -252,16 +260,31 @@ const CreateTaskScreen = ({navigation}) => {
               }
               else{
                 navigation.goBack();
-            
+
+                const uniqueId = `${Date.now()}-${Math.floor(Math.random() * 10000)}`;
+
+                var newTask = {
+                  id: uniqueId,
+                  tittle: tittle,
+                  category: category,
+                  date: dateString,
+                  startTime: startTime,
+                  isAlarm: ischecked,
+                  alarmTime : alarmTime, 
+                  description: description,
+                  isCompleted: false,
+                };
+                
+                console.log("Created !! : ",newTask);
+                
+                addTask(newTask);
+  
+               
+
+
               }
               
-              // var newTask = {
-              //   name: tittle,
-              //   category: category,
-              //   date: dateString,
-              //   startTime: startTime,
-              //   description: description,
-              // };
+              
               
                
               //  add this tasl to database and clear all inputs

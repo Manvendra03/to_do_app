@@ -1,54 +1,69 @@
 import {StyleSheet, Text, View, SafeAreaView, FlatList} from 'react-native';
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import AppBar from '../../../components/AppBar';
 import {color_combination} from '../../../constants';
 import TaskCard from '../../../components/TaskCard';
 import NoTaskAvailable from '../../../components/NoTaskAvailable';
+import { BaseContext } from '../../../../App';
 
 const CompleteTask = ({route}) => {
   const setSelectedTask = route.params.setSelectedTask;
+
+  const setSelectedIndex = route.params.setSelectedIndex;
   const setShowTask = route.params.setShowTask;
 
-  const taskData = 
-  [
-    {
-      tittle: 'UI Design',
-      category: 'Work',
-      date: '24 September 2024 , Tuesday',
-      startTime: '3:34 PM',
-      endTime: '5:45 PM',
-      description: 'This is description for other tasks',
-      isCompleted: true,
-    },
-    {
-      tittle: 'rent Car',
-      description: 'This is renting car and i want to rent car ',
-      category: 'Work',
-      date: '27 September 2024 , Tuesday',
-      startTime: '3:34 PM',
-      endTime: '5:45 PM',
-      isCompleted: true,
-    },
-    {
-      tittle: 'App Development',
-      description: 'This is app dev with react-native ',
-      category: 'Work',
-      date: '27 October 2024 , Tuesday',
-      startTime: '1:34 PM',
-      endTime: '5:45 PM',
-      isCompleted: true,
-    },
-    {
-      tittle: 'stock Market Revision ',
-      description: 'Option trading gain only profit hacker boltey',
-      category: 'Education',
-      date: '31 December 2024 , Tuesday',
-      startTime: '1:45 PM',
-      endTime: '2:55 PM',
-      isCompleted: true,
-    },
+  const {completedTaskList} = useContext(BaseContext);
+
+  const [taskData , setTaskData] = useState([]);
+ 
+  
+  useEffect(()=>{
+  
+    console.log(completedTaskList.length);
+    setTaskData(completedTaskList);
     
-  ];
+  } ,[completedTaskList])
+
+  // const taskDataa = 
+  // [
+  //   {
+  //     tittle: 'UI Design',
+  //     category: 'Work',
+  //     date: '24 September 2024 , Tuesday',
+  //     startTime: '3:34 PM',
+  //     endTime: '5:45 PM',
+  //     description: 'This is description for other tasks',
+  //     isCompleted: true,
+  //   },
+  //   {
+  //     tittle: 'rent Car',
+  //     description: 'This is renting car and i want to rent car ',
+  //     category: 'Work',
+  //     date: '27 September 2024 , Tuesday',
+  //     startTime: '3:34 PM',
+  //     endTime: '5:45 PM',
+  //     isCompleted: true,
+  //   },
+  //   {
+  //     tittle: 'App Development',
+  //     description: 'This is app dev with react-native ',
+  //     category: 'Work',
+  //     date: '27 October 2024 , Tuesday',
+  //     startTime: '1:34 PM',
+  //     endTime: '5:45 PM',
+  //     isCompleted: true,
+  //   },
+  //   {
+  //     tittle: 'stock Market Revision ',
+  //     description: 'Option trading gain only profit hacker boltey',
+  //     category: 'Education',
+  //     date: '31 December 2024 , Tuesday',
+  //     startTime: '1:45 PM',
+  //     endTime: '2:55 PM',
+  //     isCompleted: true,
+  //   },
+    
+  // ];
   // const taskData = [
   //   {
   //     // icon: require('../assets/task_Icons/brush.png'),
@@ -194,6 +209,7 @@ const CompleteTask = ({route}) => {
         item={item}
         setShowTask={setShowTask}
         setSelectedTask={setSelectedTask}
+        setSelectedIndex = {setSelectedIndex}
       />
     );
   };

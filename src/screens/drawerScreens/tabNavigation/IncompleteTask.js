@@ -9,161 +9,31 @@ import {
   Image,
   TextInput,
 } from 'react-native';
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import AppBar from '../../../components/AppBar'
 import { color_combination } from '../../../constants'
 import { FormButton } from '../../HomeScreen';
 import NoTaskAvailable from '../../../components/NoTaskAvailable';
+import { BaseContext } from '../../../../App';
+import { getImageWithCategory } from '../../../Functions/taskLogoSelector';
 
 const IncompleteTask = ({route}) => {
  
   const setSelectedTask = route.params.setSelectedTask;
+  const setSelectedIndex = route.params.setSelectedIndex;
   const setShowTask = route.params.setShowTask;
   
-  
-  // const taskData = [
-  //   {
-  //     icon: require('../../../assets/task_Icons/brush.png'),
-  //     tittle: 'UI Design',
-  //     description: '',
-  //     time: '',
-  //     isCompleted: false,
-  //   },
-  //   {
-  //     icon: require('../../../assets/task_Icons/other.png'),
-  //     tittle: 'rent Car',
-  //     description: '',
-  //     time: '',
-  //     isCompleted: false,
-  //   },
-  //   {
-  //     icon: require('../../../assets/task_Icons/brush.png'),
-  //     tittle: 'App Development',
-  //     description: '',
-  //     time: '',
-  //     isCompleted: false,
-  //   },
-  //   {
-  //     icon: require('../../../assets/task_Icons/book.png'),
-  //     tittle: 'stock Market Revision ',
-  //     description: '',
-  //     time: '',
-  //     isCompleted: false,
-  //   },
-  //   {
-  //     icon: require('../../../assets/task_Icons/cart.png'),
-  //     tittle: 'Shopping',
-  //     description: '',
-  //     time: '',
-  //     isCompleted: false,
-  //   },
-  //   {
-  //     icon: require('../../../assets/task_Icons/eat.png'),
-  //     tittle: 'Eatting',
-  //     description: '',
-  //     time: '',
-  //     isCompleted: false,
-  //   },
-  //   {
-  //     icon: require('../../../assets/task_Icons/brush.png'),
-  //     tittle: 'UI Design',
-  //     description: '',
-  //     time: '',
-  //     isCompleted: false,
-  //   },
-  //   {
-  //     icon: require('../../../assets/task_Icons/meet.png'),
-  //     tittle: 'Out with friends',
-  //     description: '',
-  //     time: '',
-  //     isCompleted: false,
-  //   },
-  // ];
-   
-  const taskData =
-  [
-    {
-      icon: require('../../../assets/task_Icons/eat.png'),
-      tittle: 'UI Design',
-      category: "Work",
-      date: "24 September 2024 , Tuesday",
-      startTime: "3:34 PM",
-      endTime: "5:45 PM",
-      description: 'This is description for other tasks',
-      isCompleted: false,
-    },
-    {
-      icon: require('../../../assets/task_Icons/other.png'),
-      tittle: 'rent Car',
-      description: 'This is renting car and i want to rent car ',
-      category: "Business",
-      date: "27 September 2024 , Tuesday",
-      startTime: "3:34 PM",
-      endTime: "5:45 PM",
-      isCompleted: false,
-    },
-    {
-      icon: require('../../../assets/task_Icons/eat.png'),
-      tittle: 'App Development',
-      description: 'This is app dev with react-native ',
-       category: "Development",
-      date: "27 October 2024 , Tuesday",
-      startTime: "1:34 PM",
-      endTime: "5:45 PM",
-      isCompleted: false,
-    },
-    {
-      icon: require('../../../assets/task_Icons/book.png'),
-      tittle: 'stock Market Revision ',
-      description: 'Option trading gain only profit hacker boltey',
-       category: "Learning",
-      date: "31 December 2024 , Tuesday",
-      startTime: "1:45 PM",
-      endTime: "2:55 PM",
-      isCompleted: false,
-    },
-    {
-      icon: require('../../../assets/task_Icons/cart.png'),
-      tittle: 'Shopping',
-      description: 'grocessarys',
-       category: "Other",
-      date: "29 September 2024 , Tuesday",
-      startTime: "4:34 PM",
-      endTime: "7:45 PM",
-      isCompleted: false,
-    },
-    {
-      icon: require('../../../assets/task_Icons/eat.png'),
-      tittle: 'Eatting',
-      description: '',
-       category: "Meal",
-      date: "24 September 2024 , Tuesday",
-      startTime: "3:34 PM",
-      endTime: "5:45 PM",
-      isCompleted: false,
-    },
-    {
-      icon: require('../../../assets/task_Icons/eat.png'),
-      tittle: 'UI Design',
-      description: '',
-       category: "Work",
-      date: "24 September 2024 , Tuesday",
-      startTime: "3:34 PM",
-      endTime: "5:45 PM",
-      isCompleted: false,
-    },
-    {
-      icon: require('../../../assets/task_Icons/meet.png'),
-      tittle: 'Out with friends',
-      description: '',
-       category: "Social",
-      date: "24 September 2024 , Tuesday",
-      startTime: "3:34 PM",
-      endTime: "5:45 PM",
-      isCompleted: false,
-    },
-  ];
+  const {incompletedTaskList} = useContext(BaseContext);
 
+  const [taskData , setTaskData] = useState([]);
+ 
+  
+  useEffect(()=>{
+    
+    setTaskData(incompletedTaskList);
+      
+
+  } ,[incompletedTaskList])
 
 
   const renderTasks = ({index, item}) => {
@@ -194,7 +64,7 @@ const IncompleteTask = ({route}) => {
             borderRadius: 10,
           }}>
           <Image
-            source={item.icon}
+            source={getImageWithCategory(item.category)}
             style={{
               height: 25,
               width: 25,
@@ -225,6 +95,7 @@ const IncompleteTask = ({route}) => {
        <TouchableOpacity style= {{  padding: 5,flexDirection : "row", alignItems: "center" , backgroundColor: "transparent" , position: "absolute", top: 10, right: 15, borderRadius: 3 }} 
            onPress={()=>{
             setSelectedTask(item) ;
+            setSelectedIndex(index);
             setShowTask(true);
            }}> 
         <Image source={require("../../../assets/pencil.png")} style = {{height: 15 , width:15 , tintColor: "grey"}} />

@@ -17,6 +17,7 @@ const TabNavigation = () => {
 
   const [showTask, setShowTask] = useState(false);
   const [selectedTask,setSelectedTask] = useState({});
+  const [selectedIndex,setSelectedIndex] = useState({});
 
 
 
@@ -34,14 +35,14 @@ const TabNavigation = () => {
           }}
         
           style={{ }} >
-        <Tab.Screen name="All Task   [99]" component={AllTask}  initialParams={{setSelectedTask: setSelectedTask ,setShowTask: setShowTask}}/>
-        <Tab.Screen name="Pending   [99]" component={IncompleteTask} initialParams={{setSelectedTask: setSelectedTask ,setShowTask: setShowTask}}/>
-        <Tab.Screen name="Finished   [99]" component={CompleteTask} initialParams={{setSelectedTask: setSelectedTask ,setShowTask: setShowTask}}/>
+        <Tab.Screen name="All Task" component={AllTask}  initialParams={{setSelectedTask: setSelectedTask ,setShowTask: setShowTask , setSelectedIndex : setSelectedIndex}}/>
+        <Tab.Screen name="Pending" component={IncompleteTask} initialParams={{setSelectedTask: setSelectedTask ,setShowTask: setShowTask,setSelectedIndex : setSelectedIndex}}/>
+        <Tab.Screen name="Finished" component={CompleteTask} initialParams={{setSelectedTask: setSelectedTask ,setShowTask: setShowTask,setSelectedIndex : setSelectedIndex}}/>
       </Tab.Navigator>
 
 
       <Modal isVisible={showTask} >
-          <EditModel setShowTask={setShowTask} taskobject={selectedTask}/>
+          <EditModel setShowTask={setShowTask} taskobject={selectedTask} index={selectedIndex}/>
       </Modal>
     </View>
   );

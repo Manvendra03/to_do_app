@@ -11,7 +11,7 @@ import {
 import { color_combination } from '../constants';
   
 
-const TaskCard = ({index,item,setShowTask ,setSelectedTask}) => {
+const TaskCard = ({index,item,setShowTask ,setSelectedTask , setSelectedIndex}) => {
 
     // console.log("*************************************",{index});
     return (
@@ -71,7 +71,7 @@ const TaskCard = ({index,item,setShowTask ,setSelectedTask}) => {
                 // console.log("Tappeddd ...");
               
                 setSelectedTask(item);
-
+                setSelectedIndex(index);  
                 setShowTask(true);
             }}>
             <Image

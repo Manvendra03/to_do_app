@@ -9,8 +9,8 @@ import {
   Image,
   TextInput,
 } from 'react-native';
-import React, {useState} from 'react';
-import {app_name, color_combination} from '../constants';
+import React, {useContext, useEffect, useState} from 'react';
+import {app_name,} from '../constants';
 
 import Modal from 'react-native-modal';
 import LinearGradient from 'react-native-linear-gradient';
@@ -21,78 +21,89 @@ import EditModel from '../components/EditModel';
 import {getImageWithCategory} from '../Functions/taskLogoSelector';
 import TaskCard from '../components/TaskCard';
 import NoTaskAvailable from '../components/NoTaskAvailable';
+import {BaseContext, myLocalStorage} from '../../App';
+
+import AllTask from './drawerScreens/tabNavigation/AllTask';
+import { getData } from '../Functions/databaseFunctions';
 
 const HomeScreen = ({navigation}) => {
   const [selectedTask, setSelectedTask] = useState({});
+  const [selectedIndex, setSelectedIndex] = useState({});
+  const [totalTask , setTotalTask] = useState(1);
+  const [progress , setProgress] = useState(1);
+  const {completedTaskList, incompletedTaskList} = useContext(BaseContext);
 
-  const taskData = 
-  [
-    {
-      tittle: 'Meet with Client',
-      description: 'regarding design selection and discuss timeline for project',
-      category: 'Meeting',
-      date: '27 September 2024 , Tuesday',
-      startTime: '2:45 PM',
-      endTime: '5:45 PM',
-      isCompleted: false,
-    },
-    {
-      tittle: 'UI Design',
-      category: 'Work',
-      date: '24 September 2024 , Tuesday',
-      startTime: '3:30 PM',
-      endTime: '5:45 PM',
-      description: 'This is description for other tasks',
-      isCompleted: false,
-    },
-    
-    {
-      tittle: 'Running and Exercise',
-      description: 'This is app dev with react-native ',
-      category: 'Fitness',
-      date: '27 October 2024 , Tuesday',
-      startTime: '5:00 PM',
-      endTime: '5:45 PM',
-      isCompleted: false,
-    },
-    {
-      tittle: 'Maths Revision ',
-      description: 'Option trading gain only profit hacker boltey',
-      category: 'Education',
-      date: '31 December 2024 , Tuesday',
-      startTime: '1:45 PM',
-      endTime: '2:55 PM',
-      isCompleted: true,
-    },
-    {
-      tittle: 'Shopping',
-      description: 'grocessarys',
-      category: 'Shopping',
-      date: '5 October 2024 , Tuesday',
-      startTime: '10:34 AM',
-      endTime: '7:45 PM',
-      isCompleted: true,
-    },
-    {
-      tittle: 'Half Day Meal',
-      description: '',
-      category: 'Meal',
-      date: '24 September 2024 , Tuesday',
-      startTime: '3:34 PM',
-      endTime: '5:45 PM',
-      isCompleted: true,
-    },
-    
-    {
-      tittle: 'Pubg Streaming',
-      description: '',
-      category: 'Other',
-      date: '24 September 2024 , Tuesday',
-      startTime: '3:34 PM',
-      endTime: '5:45 PM',
-      isCompleted: true,
-    },
-  ];
+ 
+  const [taskData, setTaskData] = useState([]);
+
+  // const taskDatas =
+  // [
+  //   {
+  //     tittle: 'Meet with Client',
+  //     description: 'regarding design selection and discuss timeline for project',
+  //     category: 'Meeting',
+  //     date: '27 September 2024 , Tuesday',
+  //     startTime: '2:45 PM',
+  //     endTime: '5:45 PM',
+  //     isCompleted: false,
+  //   },
+  //   {
+  //     tittle: 'UI Design',
+  //     category: 'Work',
+  //     date: '24 September 2024 , Tuesday',
+  //     startTime: '3:30 PM',
+  //     endTime: '5:45 PM',
+  //     description: 'This is description for other tasks',
+  //     isCompleted: false,
+  //   },
+
+  //   {
+  //     tittle: 'Running and Exercise',
+  //     description: 'This is app dev with react-native ',
+  //     category: 'Fitness',
+  //     date: '27 October 2024 , Tuesday',
+  //     startTime: '5:00 PM',
+  //     endTime: '5:45 PM',
+  //     isCompleted: false,
+  //   },
+  //   {
+  //     tittle: 'Maths Revision ',
+  //     description: 'Option trading gain only profit hacker boltey',
+  //     category: 'Education',
+  //     date: '31 December 2024 , Tuesday',
+  //     startTime: '1:45 PM',
+  //     endTime: '2:55 PM',
+  //     isCompleted: true,
+  //   },
+  //   {
+  //     tittle: 'Shopping',
+  //     description: 'grocessarys',
+  //     category: 'Shopping',
+  //     date: '5 October 2024 , Tuesday',
+  //     startTime: '10:34 AM',
+  //     endTime: '7:45 PM',
+  //     isCompleted: true,
+  //   },
+  //   {
+  //     tittle: 'Half Day Meal',
+  //     description: '',
+  //     category: 'Meal',
+  //     date: '24 September 2024 , Tuesday',
+  //     startTime: '3:34 PM',
+  //     endTime: '5:45 PM',
+  //     isCompleted: true,
+  //   },
+
+  //   {
+  //     tittle: 'Pubg Streaming',
+  //     description: '',
+  //     category: 'Other',
+  //     date: '24 September 2024 , Tuesday',
+  //     startTime: '3:34 PM',
+  //     endTime: '5:45 PM',
+  //     isCompleted: true,
+  //   },
+  // ];
   const renderTasks = ({index, item}) => {
     return (
       <TaskCard
@@ -100,12 +111,40 @@ const HomeScreen = ({navigation}) => {
         item={item}
         showTask={showTask}
         setShowTask={setShowTask}
+        setSelectedIndex={setSelectedIndex}
         setSelectedTask={setSelectedTask}
       />
     );
   };
 
   const [showTask, setShowTask] = useState(false);
+
+  useEffect(() => {
+    if(incompletedTaskList){
+      const Alllist = incompletedTaskList.concat(completedTaskList);
+      setTaskData(Alllist);
+      console.log('All length', Alllist.length);
+      setTotalTask(Alllist.length); 
+    
+      
+    }
+    
+    // console.log("{}{}{}{}",progress);
+    async function func() {
+      const i =await  getData('keyy');
+       console.log("_______",i);
+     }
+
+     func();
+
+  }, [incompletedTaskList,completedTaskList]);
+
+  useEffect(()=>{
+    console.log("-->> ",totalTask);
+    console.log("run",completedTaskList.length," fff ",totalTask)  
+    const p = completedTaskList.length / totalTask *100;
+    setProgress(p);
+  },[totalTask,taskData])
 
   return (
     <SafeAreaView
@@ -172,7 +211,7 @@ const HomeScreen = ({navigation}) => {
             fontWeight: '400',
             color: 'white',
           }}>
-          15 Tasks
+          {totalTask} Tasks
         </Text>
 
         <View
@@ -259,10 +298,10 @@ const HomeScreen = ({navigation}) => {
                 marginBottom: 5,
               }}>
               <Text style={{color: 'white', fontWeight: '400'}}>Progress</Text>
-              <Text style={{color: 'white', fontWeight: '500'}}> 60%</Text>
+              <Text style={{color: 'white', fontWeight: '500'}}> {progress.toFixed(0)} %</Text>
             </View>
             <Progress.Bar
-              progress={0.9}
+              progress={progress/100}
               width={180}
               style={{backgroundColor: '#f6f6f6', borderColor: '#f6f6f6'}}
             />
@@ -303,7 +342,7 @@ const HomeScreen = ({navigation}) => {
             ListFooterComponent={<View style={{height: 60}} />}
           />
         ) : (
-          <NoTaskAvailable/>
+          <NoTaskAvailable />
         )}
       </View>
 
@@ -330,7 +369,11 @@ const HomeScreen = ({navigation}) => {
       </TouchableOpacity>
 
       <Modal isVisible={showTask}>
-        <EditModel setShowTask={setShowTask} taskobject={selectedTask} />
+        <EditModel
+          setShowTask={setShowTask}
+          taskobject={selectedTask}
+          index={selectedIndex}
+        />
       </Modal>
     </SafeAreaView>
   );
@@ -402,5 +445,3 @@ export const FormButton = ({tittle, bgcolor, func}) => {
     </TouchableOpacity>
   );
 };
-
-

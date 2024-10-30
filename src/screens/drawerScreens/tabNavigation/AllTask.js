@@ -9,103 +9,29 @@ import {
   Image,
   TextInput,
 } from 'react-native';
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import AppBar from '../../../components/AppBar'
 import { color_combination } from '../../../constants'
 import TaskCard from '../../../components/TaskCard';
 import EditModel from '../../../components/EditModel';
 import { Modal } from 'react-native-paper';
 import NoTaskAvailable from '../../../components/NoTaskAvailable';
+import { BaseContext } from '../../../../App';
 
 const AllTask = ({route}) => {
 
   // console.log("----->>>>>>",route.params);
   const setSelectedTask = route.params.setSelectedTask;
+  const setSelectedIndex = route.params.setSelectedIndex;
   const setShowTask = route.params.setShowTask;
+
+  const {completedTaskList,incompletedTaskList} = useContext(BaseContext);
+
   
-  // const taskData = [
-  //   {
-  //     // icon: require('../assets/task_Icons/brush.png'),
-  //     tittle: 'UI Design',
-  //     category: "Design",
-  //     date: "24 September 2024 , Tuesday",
-  //     startTime: "3:34 PM",
-  //     endTime: "5:45 PM",
-  //     description: 'This is description for other tasks',
-  //     isCompleted: false,
-  //   },
-  //   {
-  //     // icon: require('../assets/task_Icons/other.png'),
-  //     tittle: 'rent Car',
-  //     description: 'This is renting car and i want to rent car ',
-  //     category: "Business",
-  //     date: "27 September 2024 , Tuesday",
-  //     startTime: "3:34 PM",
-  //     endTime: "5:45 PM",
-  //     isCompleted: false,
-  //   },
-  //   {
-  //     // icon: require('../assets/task_Icons/brush.png'),
-  //     tittle: 'App Development',
-  //     description: 'This is app dev with react-native ',
-  //      category: "Development",
-  //     date: "27 October 2024 , Tuesday",
-  //     startTime: "1:34 PM",
-  //     endTime: "5:45 PM",
-  //     isCompleted: false,
-  //   },
-  //   {
-  //     // icon: require('../assets/task_Icons/book.png'),
-  //     tittle: 'stock Market Revision ',
-  //     description: 'Option trading gain only profit hacker boltey',
-  //      category: "Learning",
-  //     date: "31 December 2024 , Tuesday",
-  //     startTime: "1:45 PM",
-  //     endTime: "2:55 PM",
-  //     isCompleted: false,
-  //   },
-  //   {
-  //     // icon: require('../assets/task_Icons/cart.png'),
-  //     tittle: 'Shopping',
-  //     description: 'grocessarys',
-  //      category: "Other",
-  //     date: "29 September 2024 , Tuesday",
-  //     startTime: "4:34 PM",
-  //     endTime: "7:45 PM",
-  //     isCompleted: false,
-  //   },
-  //   {
-  //     // icon: require('../assets/task_Icons/eat.png'),
-  //     tittle: 'Eatting',
-  //     description: '',
-  //      category: "Design",
-  //     date: "24 September 2024 , Tuesday",
-  //     startTime: "3:34 PM",
-  //     endTime: "5:45 PM",
-  //     isCompleted: false,
-  //   },
-  //   {
-  //     // icon: require('../assets/task_Icons/brush.png'),
-  //     tittle: 'UI Design',
-  //     description: '',
-  //      category: "Design",
-  //     date: "24 September 2024 , Tuesday",
-  //     startTime: "3:34 PM",
-  //     endTime: "5:45 PM",
-  //     isCompleted: false,
-  //   },
-  //   {
-  //     // icon: require('../assets/task_Icons/meet.png'),
-  //     tittle: 'Out with friends',
-  //     description: '',
-  //      category: "Design",
-  //     date: "24 September 2024 , Tuesday",
-  //     startTime: "3:34 PM",
-  //     endTime: "5:45 PM",
-  //     isCompleted: false,
-  //   },
-  // ];
-  const taskData = 
+  const [taskData , setTaskData] = useState([]);
+
+ 
+  const taskDataa = 
   [
     {
       
@@ -243,9 +169,18 @@ const AllTask = ({route}) => {
     //     </TouchableOpacity>
     //   </View>
     // );
-    return <TaskCard index= {index} item = {item}  setShowTask={setShowTask} setSelectedTask={setSelectedTask}/>
+    return <TaskCard index= {index} item = {item}  setShowTask={setShowTask} setSelectedTask={setSelectedTask} setSelectedIndex={setSelectedIndex}/>
     
   };
+
+
+  useEffect(()=>{
+    
+    const Alllist = incompletedTaskList.concat(completedTaskList);
+    setTaskData(Alllist);
+      
+  } ,[incompletedTaskList])
+
 
   return (
     <View style ={{backgroundColor: "#ECF4FD" , height: "100%" ,}}>

@@ -1,10 +1,22 @@
 import {Dimensions, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import AppBar from '../../components/AppBar';
 import CustomLineChart from '../../components/CustomLineChart';
 import {ScrollView} from 'react-native-gesture-handler';
+import { BaseContext } from '../../../App';
 
 const Dashboard = () => {
+
+  const {completedTaskList, incompletedTaskList} = useContext(BaseContext);
+   
+  const [pendingCount, setPendingCount] = useState(0);
+  const [completedCount, setCompletedCount] = useState(0);
+
+  useEffect(()=>{
+    setPendingCount(incompletedTaskList.length);
+    setCompletedCount(completedTaskList.length);
+  },[completedTaskList,incompletedTaskList])
+
   return (
     <View
       style={{
@@ -52,7 +64,7 @@ const Dashboard = () => {
                 All Task
               </Text>
               <Text style={{fontSize: 18, fontWeight: 'bold', color: 'white'}}>
-                23
+                {pendingCount+completedCount}
               </Text>
             </View>
             <View
@@ -75,7 +87,7 @@ const Dashboard = () => {
                 Pending
               </Text>
               <Text style={{fontSize: 18, fontWeight: 'bold', color: 'white'}}>
-                12
+                {pendingCount}
               </Text>
             </View>
             <View
@@ -93,7 +105,7 @@ const Dashboard = () => {
                 finished
               </Text>
               <Text style={{fontSize: 18, fontWeight: 'bold', color: 'white'}}>
-                11
+                {completedCount}
               </Text>
             </View>
           </View>
@@ -121,14 +133,13 @@ const Dashboard = () => {
           {/* Pending Task Chart */}
           <CustomLineChart
             dataa={[
-              Math.random() * 100,
-              Math.random() * 100,
-              Math.random() * 100,
-              Math.random() * 100,
-              Math.random() * 100,
-              Math.random() * 100,
-              Math.random() * 100,
-            ]}
+              10,
+              20,
+              30,
+              40,
+              50,
+              60
+              ]}
           />
           <Text
             style={{
@@ -155,13 +166,12 @@ const Dashboard = () => {
           {/* Completed Task Chart  */}
           <CustomLineChart
             dataa={[
-              Math.random() * 100,
-              Math.random() * 100,
-              Math.random() * 100,
-              Math.random() * 100,
-              Math.random() * 100,
-              Math.random() * 100,
-              Math.random() * 100,
+            10,
+            20,
+            30,
+            40,
+            50,
+            60
             ]}
           />
           <Text

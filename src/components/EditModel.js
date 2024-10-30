@@ -10,7 +10,7 @@ import {
   TextInput,
 } from 'react-native';
 
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import CheckBox from 'react-native-check-box';
 import TimeSelector from '../components/TimeSelector';
 import Modal from 'react-native-modal';
@@ -24,9 +24,15 @@ import {
   getMonthFromIndex,
   getTimeFromHoursAndMinutes,
 } from '../Functions/pickerFunctions';
+import { BaseContext } from '../../App';
 
-const EditModel = ({setShowTask, taskobject}) => {
+const EditModel = ({setShowTask, taskobject , index}) => {
+
+
   const [isEdit, setIsEdit] = useState(false);
+
+  const {editTask , markAsIncomplete , markAsComplete,removeTask} = useContext(BaseContext);
+  
 
   const [isCompleted, setIsCompleted] = useState(
     taskobject.isCompleted ?? false,
@@ -38,7 +44,7 @@ const EditModel = ({setShowTask, taskobject}) => {
   const [tittle, setTittle] = useState(taskobject.tittle);
   const [description, setDescription] = useState(taskobject.description);
 
-  const [ischecked, setIsChecked] = useState(true);
+  const [ischecked, setIsChecked] = useState(taskobject.isAlarm);
 
   // variable used for DatePicker
   const [date, setDate] = useState(new Date());
@@ -78,7 +84,7 @@ const EditModel = ({setShowTask, taskobject}) => {
   const [time, setTime] = useState(new Date());
 
   const [startTime, setStartTime] = useState(taskobject.startTime);
-  const [endTime, setEndTime] = useState(taskobject.endTime);
+  const [endTime, setEndTime] = useState(taskobject.alarmTime);
 
   const [isStartTimer, setIsStartTimer] = useState(true);
   const [openStartTime, setOpenStartTime] = useState(false);
@@ -301,8 +307,15 @@ const EditModel = ({setShowTask, taskobject}) => {
             }}
             onPress={() => {
               // setIsEdit(false);
-              // setShowTask(false);
-              setIsCompleted(false);
+
+              const temp = {...taskobject}
+              // console.log("-------->",temp);
+
+              markAsIncomplete(index,temp)
+              
+
+              setShowTask(false);
+              // setIsCompleted(false);
             }}>
             <Text style={{fontWeight: '700', fontSize: 18, color: 'white'}}>
               Mark as Incomplete
@@ -321,6 +334,7 @@ const EditModel = ({setShowTask, taskobject}) => {
               bgcolor="red"
               tittle={'Remove'}
               func={() => {
+                removeTask(taskobject);
                 setShowTask(false);
               }}
             />
@@ -328,6 +342,7 @@ const EditModel = ({setShowTask, taskobject}) => {
               bgcolor="green"
               tittle={'Completed'}
               func={() => {
+                markAsComplete(taskobject); 
                 setShowTask(false);
               }}
             />
@@ -349,7 +364,30 @@ const EditModel = ({setShowTask, taskobject}) => {
               if (tittle === '') {
                 setShowTittleWarning(true);
               } else {
-                setShowTask(false);
+                // setShowTask(false);
+                   if(isEdit)
+                   {
+                     console.log(tittle); 
+
+                      var modifedTask = {
+                        id: taskobject.id,
+                        tittle: tittle,
+                        category: taskobject.category,
+                        date: dateString,
+                        startTime: startTime,
+                        isAlarm: ischecked,
+                        alarmTime : endTime, 
+                        description: description,
+                        isCompleted: taskobject.isCompleted,
+                      };
+                        
+                      editTask(index , modifedTask);
+                    
+                      console.log("Updatedd !! ---------------------------------->",index);
+                      setShowTask(false);   
+                   }
+
+
               }
             }}>
             <Text style={{fontWeight: '700', fontSize: 20, color: 'white'}}>
