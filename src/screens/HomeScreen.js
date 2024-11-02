@@ -25,6 +25,7 @@ import {BaseContext, myLocalStorage} from '../../App';
 
 import AllTask from './drawerScreens/tabNavigation/AllTask';
 import { getData } from '../Functions/databaseFunctions';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const HomeScreen = ({navigation}) => {
   const [selectedTask, setSelectedTask] = useState({});
@@ -122,10 +123,11 @@ const HomeScreen = ({navigation}) => {
   useEffect(() => {
     if(incompletedTaskList){
       const Alllist = incompletedTaskList.concat(completedTaskList);
+      // const Alllist = incompletedTaskList;
       setTaskData(Alllist);
+      // AsyncStorage.clear();
       console.log('All length', Alllist.length);
       setTotalTask(Alllist.length); 
-    
       
     }
     

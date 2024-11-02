@@ -13,6 +13,8 @@ import SplashScreen from 'react-native-splash-screen';
 import {LogBox} from 'react-native';
 import IncompleteTask from './src/screens/drawerScreens/tabNavigation/IncompleteTask';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getData, incompleteList, setData } from './src/Functions/databaseFunctions';
+import { getDrawerStatusFromState } from '@react-navigation/drawer';
 
 export const BaseContext = createContext({
   // completedTaskList: [{}],
@@ -224,13 +226,17 @@ function App() {
 
 
 
-  function addTask(newTask) {
+ async function addTask(newTask) {
     //  console.log(" ----- " ,newTask);
     //  var temp = incompletedTaskList.push(newTask);
+    
+     
     const temp = [newTask, ...incompletedTaskList];
+    
+    await setData(incompleteList,incompletedTaskList);
     console.log(temp);
 
-    setIncompletedTaskList(temp);
+    // setIncompletedTaskList(temp);
   }
 
   function editTask(index, modifiedTask) {
@@ -294,11 +300,17 @@ function App() {
   }
 
   // return (<HomeScreen/>);
-  useEffect(() => {
+  useEffect(async () => {
+    
+    await getData(incompleteList); 
+    
+    
+    
     setTimeout(() => {
       console.log('Started !!');
       SplashScreen.hide();
     }, 500);
+
   }, []);
 
   return (

@@ -178,8 +178,9 @@ const AllTask = ({route}) => {
     
     const Alllist = incompletedTaskList.concat(completedTaskList);
     setTaskData(Alllist);
+    
       
-  } ,[incompletedTaskList])
+  } ,[incompletedTaskList,completedTaskList])
 
 
   return (

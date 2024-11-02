@@ -1,7 +1,11 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+export const incompleteList = "incompleteTaskList";
+export const completeList = "completeTaskList";
 
-const setData = async (key,value) => {
+
+
+export const setData = async (key,value) => {
   
     try {
       console.log("runn" , value)
