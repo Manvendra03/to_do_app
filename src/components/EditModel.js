@@ -367,7 +367,7 @@ const EditModel = ({setShowTask, taskobject , index}) => {
                 // setShowTask(false);
                    if(isEdit)
                    {
-                     console.log(tittle); 
+                    //  console.log(tittle); 
 
                       var modifedTask = {
                         id: taskobject.id,
@@ -446,8 +446,8 @@ const EditModel = ({setShowTask, taskobject , index}) => {
             selectedTime.setMinutes(data.getMinutes());
 
             setOpenStartTime(false);
-            console.log(data.getHours());
-            console.log(data.getMinutes());
+            // console.log(data.getHours());
+            // console.log(data.getMinutes());
 
             setIsStartTimer(false);
             if (isStartTimer) {

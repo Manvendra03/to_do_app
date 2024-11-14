@@ -1,35 +1,33 @@
+
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const incompleteList = "incompleteTaskList";
-export const completeList = "completeTaskList";
 
-
-
-export const setData = async (key,value) => {
-  
+export const fetchData = async (key) => {
     try {
-      console.log("runn" , value)
-      const jsonValue = JSON.stringify(value);
-      await AsyncStorage.setItem(key, jsonValue); 
-    } catch (e) {
-    console.log("Rorrrr");
-       //POP UP :  
-      // saving error
+      const value = await AsyncStorage.getItem(key);
+      if (value !== null) {
+        // console.log('Fetched data:', value);
+        const objTemp =  JSON.parse(value);
+        return objTemp;
+      } else {
+        // console.log("No data found for key 'keyy'");
+        return null;
+      }
+    } catch (error) {
+      console.error('Error fetching data from AsyncStorage:', error);
+      return null;
     }
   };
 
-  
 
-export const getData = async (key) => {
+export const saveData = async (key,value) => {
+      const jsonData = JSON.stringify(value);
     try {
-        console.log("okaay");
-     
-        const jsonValue = await AsyncStorage.getItem(key);
-      console.log("runnKeyyyyyyy" , JSON.parse(jsonValue));
-      // return jsonValue != null ? JSON.parse(jsonValue) : null;
-      return jsonValue;
-    } catch (e) {
-      //POP UP  
-      // error reading value
+      await AsyncStorage.setItem(key,jsonData);
+      return true;
+    } catch (error) {
+      console.error("Error saving data to AsyncStorage:", error);
+      return false;
     }
   };
+  

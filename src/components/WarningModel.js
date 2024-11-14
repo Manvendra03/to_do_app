@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 
 const WarningModal = ({ visible, title, description, onOkPress }) => {
-  console.log("MODEL OPEN >>>>>>")
+  // console.log("MODEL OPEN >>>>>>")
   return (
     <Modal
       transparent={true}

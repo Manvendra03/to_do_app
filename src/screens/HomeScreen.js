@@ -28,13 +28,15 @@ import { getData } from '../Functions/databaseFunctions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const HomeScreen = ({navigation}) => {
+
   const [selectedTask, setSelectedTask] = useState({});
   const [selectedIndex, setSelectedIndex] = useState({});
-  const [totalTask , setTotalTask] = useState(1);
-  const [progress , setProgress] = useState(1);
-  const {completedTaskList, incompletedTaskList} = useContext(BaseContext);
 
- 
+  const [totalTask , setTotalTask] = useState(0);
+  const [progress , setProgress] = useState(1);
+  
+  const {completedTaskList , user, incompletedTaskList} = useContext(BaseContext);
+ console.log('###',user);
   const [taskData, setTaskData] = useState([]);
 
   // const taskDatas =
@@ -121,32 +123,25 @@ const HomeScreen = ({navigation}) => {
   const [showTask, setShowTask] = useState(false);
 
   useEffect(() => {
+   
+
     if(incompletedTaskList){
       const Alllist = incompletedTaskList.concat(completedTaskList);
-      // const Alllist = incompletedTaskList;
-      setTaskData(Alllist);
-      // AsyncStorage.clear();
-      console.log('All length', Alllist.length);
-      setTotalTask(Alllist.length); 
       
+      const prog = calcProgress(Alllist.length,completedTaskList.length);
+      // console.log(prog);
+      setProgress(prog);
+
+      // console.log("current All list length : ",Alllist.length)
+      setTaskData(Alllist);
+      //  console.log('All length this is live length ', Alllist.length);
+       setTotalTask(Alllist.length);
+      //  console.log('m complete tasks length : ',completedTaskList.length);
+       
+     
+
     }
-    
-    // console.log("{}{}{}{}",progress);
-    async function func() {
-      const i =await  getData('keyy');
-       console.log("_______",i);
-     }
-
-     func();
-
   }, [incompletedTaskList,completedTaskList]);
-
-  useEffect(()=>{
-    console.log("-->> ",totalTask);
-    console.log("run",completedTaskList.length," fff ",totalTask)  
-    const p = completedTaskList.length / totalTask *100;
-    setProgress(p);
-  },[totalTask,taskData])
 
   return (
     <SafeAreaView
@@ -300,7 +295,7 @@ const HomeScreen = ({navigation}) => {
                 marginBottom: 5,
               }}>
               <Text style={{color: 'white', fontWeight: '400'}}>Progress</Text>
-              <Text style={{color: 'white', fontWeight: '500'}}> {progress.toFixed(0)} %</Text>
+              <Text style={{color: 'white', fontWeight: '500'}}> {progress} %</Text>
             </View>
             <Progress.Bar
               progress={progress/100}
@@ -447,3 +442,20 @@ export const FormButton = ({tittle, bgcolor, func}) => {
     </TouchableOpacity>
   );
 };
+
+
+function calcProgress(totalTask , compTask)
+{
+  // const vv = AsyncStorage.getItem('keyy');
+  // console.log("Async storageeee ",vv);
+  
+  if(totalTask == 0)
+  {
+    console.log("Zeroooooo");
+    return 0;
+  }
+  
+  var temp = compTask / totalTask;
+  temp  = temp * 100 ;
+  return temp.toFixed(0);
+}

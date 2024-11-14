@@ -275,7 +275,7 @@ const CreateTaskScreen = ({navigation}) => {
                   isCompleted: false,
                 };
                 
-                console.log("Created !! : ",newTask);
+                // console.log("Created !! : ",newTask);
                 
                 addTask(newTask);
   

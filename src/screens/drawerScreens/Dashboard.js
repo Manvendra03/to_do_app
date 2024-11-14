@@ -7,15 +7,26 @@ import { BaseContext } from '../../../App';
 
 const Dashboard = () => {
 
-  const {completedTaskList, incompletedTaskList} = useContext(BaseContext);
+  const {completedTaskList, incompletedTaskList,dashboardCompleteDataList ,dashboardPendingDataList} = useContext(BaseContext);
    
   const [pendingCount, setPendingCount] = useState(0);
   const [completedCount, setCompletedCount] = useState(0);
 
+  const[pendingCountList,setPendingCountList] = useState([0,0,0,0,0,0,0]);
+  const[completeCountList,setCompleteCountList] = useState([0,0,0,0,0,0,0]);
+
   useEffect(()=>{
     setPendingCount(incompletedTaskList.length);
     setCompletedCount(completedTaskList.length);
+    
   },[completedTaskList,incompletedTaskList])
+ 
+  useEffect(()=>{
+    setPendingCountList(dashboardPendingDataList);
+    setCompleteCountList(dashboardCompleteDataList);
+
+  },[dashboardPendingDataList])
+
 
   return (
     <View
@@ -132,14 +143,9 @@ const Dashboard = () => {
 
           {/* Pending Task Chart */}
           <CustomLineChart
-            dataa={[
-              10,
-              20,
-              30,
-              40,
-              50,
-              60
-              ]}
+            dataa={
+              pendingCountList
+            }
           />
           <Text
             style={{
@@ -165,14 +171,9 @@ const Dashboard = () => {
 
           {/* Completed Task Chart  */}
           <CustomLineChart
-            dataa={[
-            10,
-            20,
-            30,
-            40,
-            50,
-            60
-            ]}
+            dataa={
+              completeCountList
+            }
           />
           <Text
             style={{

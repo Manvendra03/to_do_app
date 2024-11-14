@@ -1,10 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import 'react-native-gesture-handler';
 import React, {createContext, useEffect, useState} from 'react';
 import DrawerNavigation from './src/navigation/DrawerNavigation';
@@ -13,230 +6,46 @@ import SplashScreen from 'react-native-splash-screen';
 import {LogBox} from 'react-native';
 import IncompleteTask from './src/screens/drawerScreens/tabNavigation/IncompleteTask';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getData, incompleteList, setData } from './src/Functions/databaseFunctions';
-import { getDrawerStatusFromState } from '@react-navigation/drawer';
+import {
+  fetchData,
+  getData,
+  incompleteList,
+  saveData,
+  setData,
+} from './src/Functions/databaseFunctions';
+import {getDrawerStatusFromState} from '@react-navigation/drawer';
+import LoginScreen from './src/screens/LoginScreen';
 
 export const BaseContext = createContext({
-  // completedTaskList: [{}],
-  // incompletedTaskList: [{}],
+  completedTaskList: [],
+  incompletedTaskList: [],
 });
-
 
 function App() {
   LogBox.ignoreAllLogs();
-  
-  // storeData('MontyDonnnnn');
-  
 
-  const [completedTaskList, setCompletedTaskList] = useState(
-    //   [
-    //   {
-    //     tittle: 'Monty',
-    //     category: 'Work',
-    //     date: '24 September 2024 , Tuesday',
-    //     startTime: '3:34 PM',
-    //     endTime: '5:45 PM',
-    //     description: 'This is description for other tasks',
-    //     isCompleted: true,
-    //   },
-    //   {
-    //     tittle: 'rent Car',
-    //     description: 'This is renting car and i want to rent car ',
-    //     category: 'Work',
-    //     date: '27 September 2024 , Tuesday',
-    //     startTime: '3:34 PM',
-    //     endTime: '5:45 PM',
-    //     isCompleted: true,
-    //   },
-    //   {
-    //     tittle: 'App Development',
-    //     description: 'This is app dev with react-native ',
-    //     category: 'Work',
-    //     date: '27 October 2024 , Tuesday',
-    //     startTime: '1:34 PM',
-    //     endTime: '5:45 PM',
-    //     isCompleted: true,
-    //   },
-    //   {
-    //     tittle: 'stock Market Revision ',
-    //     description: 'Option trading gain only profit hacker boltey',
-    //     category: 'Education',
-    //     date: '31 December 2024 , Tuesday',
-    //     startTime: '1:45 PM',
-    //     endTime: '2:55 PM',
-    //     isCompleted: true,
-    //   },
-    // ]
+  const [loading, setLoading] = useState(true); // Initially, the app is loading
 
-    [
-      {
-        alarmTime: '9 : 22 PM',
-        category: 'Appointment',
-        date: '25 October 2024 , Friday',
-        description: '',
-        id: '1729871552659-2500',
-        isAlarm: false,
-        isCompleted: true,
-        startTime: '9 : 22 PM',
-        tittle: 'task3',
-      },
-      {
-        alarmTime: '9 : 22 PM',
-        category: 'Shopping',
-        date: '25 October 2024 , Friday',
-        description: '',
-        id: '1729871543543-84600',
-        isAlarm: false,
-        isCompleted: true,
-        startTime: '9 : 22 PM',
-        tittle: 'task2',
-      },
-      {
-        alarmTime: '9 : 22 PM',
-        category: 'Education',
-        date: '25 October 2024 , Friday',
-        description: '',
-        id: '1729871533225-6544',
-        isAlarm: false,
-        isCompleted: true,
-        startTime: '9 : 22 PM',
-        tittle: 'task1',
-      },
-    ],
+  const [dashboardPendingDataList, setDashboardPendingDataList] = useState([]);
+  const [dashboardCompleteDataList, setDashboardCompleteDataList] = useState(
+    [],
   );
-  const [incompletedTaskList, setIncompletedTaskList] = useState(
-    //    [
-    //   {
-    //     // icon: require('../assets/task_Icons/eat.png'),
-    //     tittle: 'Manvendra',
-    //     category: 'Work',
-    //     date: '24 September 2024 , Tuesday',
-    //     startTime: '3:34 PM',
-    //     endTime: '5:45 PM',
-    //     description: 'This is description for other tasks',
-    //     isCompleted: false,
-    //   },
-    //   {
-    //     // icon: require('../../../assets/task_Icons/other.png'),
-    //     tittle: 'rent Car',
-    //     description: 'This is renting car and i want to rent car ',
-    //     category: 'Work',
-    //     date: '27 September 2024 , Tuesday',
-    //     startTime: '3:34 PM',
-    //     endTime: '5:45 PM',
-    //     isCompleted: false,
-    //   },
-    //   {
-    //     // icon: require('../../../assets/task_Icons/eat.png'),
-    //     tittle: 'App Development',
-    //     description: 'This is app dev with react-native ',
-    //     category: 'Other',
-    //     date: '27 October 2024 , Tuesday',
-    //     startTime: '1:34 PM',
-    //     endTime: '5:45 PM',
-    //     isCompleted: false,
-    //   },
-    //   // {
-    //   //   // icon: require('../../../assets/task_Icons/book.png'),
-    //   //   tittle: 'stock Market Revision ',
-    //   //   description: 'Option trading gain only profit hacker boltey',
-    //   //   category: 'Education',
-    //   //   date: '31 December 2024 , Tuesday',
-    //   //   startTime: '1:45 PM',
-    //   //   endTime: '2:55 PM',
-    //   //   isCompleted: false,
-    //   // },
-    //   // {
-    //   //   // icon: require('../../../assets/task_Icons/cart.png'),
-    //   //   tittle: 'Shopping',
-    //   //   description: 'grocessarys',
-    //   //   category: 'Shopping',
-    //   //   date: '29 September 2024 , Tuesday',
-    //   //   startTime: '4:34 PM',
-    //   //   endTime: '7:45 PM',
-    //   //   isCompleted: false,
-    //   // },
-    //   // {
-    //   //   // icon: require('../../../assets/task_Icons/eat.png'),
-    //   //   tittle: 'Eatting',
-    //   //   description: '',
-    //   //   category: 'Meal',
-    //   //   date: '24 September 2024 , Tuesday',
-    //   //   startTime: '3:34 PM',
-    //   //   endTime: '5:45 PM',
-    //   //   isCompleted: false,
-    //   // },
-    //   // {
-    //   //   // icon: require('../../../assets/task_Icons/eat.png'),
-    //   //   tittle: 'UI Design',
-    //   //   description: '',
-    //   //   category: 'Work',
-    //   //   date: '24 September 2024 , Tuesday',
-    //   //   startTime: '3:34 PM',
-    //   //   endTime: '5:45 PM',
-    //   //   isCompleted: false,
-    //   // },
-    //   // {
-    //   //   // icon: require('../../../assets/task_Icons/meet.png'),
-    //   //   tittle: 'Out with friends',
-    //   //   description: '',
-    //   //   category: 'Social',
-    //   //   date: '24 September 2024 , Tuesday',
-    //   //   startTime: '3:34 PM',
-    //   //   endTime: '5:45 PM',
-    //   //   isCompleted: false,
-    //   // },
-    // ],
-    [
-      {
-        alarmTime: '9 : 22 PM',
-        category: 'Appointment',
-        date: '25 October 2024 , Friday',
-        description: '',
-        id: '1729871552659-250',
-        isAlarm: false,
-        isCompleted: false,
-        startTime: '9 : 22 PM',
-        tittle: 'task3',
-      },
-      {
-        alarmTime: '9 : 22 PM',
-        category: 'Shopping',
-        date: '25 October 2024 , Friday',
-        description: '',
-        id: '1729871543543-8460',
-        isAlarm: false,
-        isCompleted: false,
-        startTime: '9 : 22 PM',
-        tittle: 'task2',
-      },
-      {
-        alarmTime: '9 : 22 PM',
-        category: 'Education',
-        date: '25 October 2024 , Friday',
-        description: '',
-        id: '1729871533225-654',
-        isAlarm: false,
-        isCompleted: false,
-        startTime: '9 : 22 PM',
-        tittle: 'task1',
-      },
-    ],
-  );
+  const [user, setUser] = useState(null);
+  const [isUser, setIsUser] = useState(false);
+  const [completedTaskList, setCompletedTaskList] = useState([]);
+  const [incompletedTaskList, setIncompletedTaskList] = useState([]);
 
-
-
- async function addTask(newTask) {
-    //  console.log(" ----- " ,newTask);
-    //  var temp = incompletedTaskList.push(newTask);
-    
-     
+  async function addTask(newTask) {
     const temp = [newTask, ...incompletedTaskList];
-    
-    await setData(incompleteList,incompletedTaskList);
-    console.log(temp);
 
-    // setIncompletedTaskList(temp);
+    console.log('HHHHHHHHHHHHH', temp.length);
+
+    if (saveData('incompleteTaskList', temp)) {
+      console.log('sSaved to DBMS');
+      setIncompletedTaskList(temp);
+    } else {
+      console.log('try Later Dont able to operate ...!');
+    }
   }
 
   function editTask(index, modifiedTask) {
@@ -247,15 +56,18 @@ function App() {
       ...incompletedTaskList.slice(index + 1),
     ];
 
-    // Update the state with the new array
-    setIncompletedTaskList(updatedTaskList);
-    console.log("--->>>",updatedTaskList);
+    if (saveData('incompleteTaskList', updatedTaskList)) {
+      console.log('sSaved to DBMS');
+      setIncompletedTaskList(updatedTaskList);
+      console.log('--->>>', updatedTaskList);
+    } else {
+      console.log('try Later Dont able to operate ...!');
+    }
   }
 
   function markAsIncomplete(index, task) {
     console.log('------->>>>>', task);
 
-    
     const updatedCompleteTaskList = completedTaskList.filter(item => {
       console.log('Checking item:', item);
       console.log('task task task ', task); // Log each element being checked
@@ -263,68 +75,192 @@ function App() {
     });
 
     // array.filter(item => item !== myObj);
-    setCompletedTaskList(updatedCompleteTaskList);
+
+    if (saveData('completeTaskList', updatedCompleteTaskList)) {
+      console.log('sSaved to DBMS');
+      setCompletedTaskList(updatedCompleteTaskList);
+    } else {
+      console.log('try Later Dont able to operate ...!');
+    }
 
     task.isCompleted = false;
     const updatedInCompleteTaskList = [task, ...incompletedTaskList];
-    setIncompletedTaskList(updatedInCompleteTaskList);
+
+    if (saveData('incompleteTaskList', updatedInCompleteTaskList)) {
+      console.log('sSaved to DBMS');
+      setIncompletedTaskList(updatedInCompleteTaskList);
+    } else {
+      console.log('try Later Dont able to operate ...!');
+    }
 
     console.log('******* complete length app ', completedTaskList.length);
-    console.log(
-      '*******____ incomplete length app ',
-      incompletedTaskList,
-    );
+    console.log('*******____ incomplete length app ', incompletedTaskList);
   }
 
-  function markAsComplete(task)
-  {
-
+  function markAsComplete(task) {
     const updatedInCompleteTaskList = incompletedTaskList.filter(item => {
       return item.id !== task.id;
     });
-    setIncompletedTaskList(updatedInCompleteTaskList);
-    
+
+    // setIncompletedTaskList(updatedInCompleteTaskList);
+    if (saveData('incompleteTaskList', updatedInCompleteTaskList)) {
+      console.log('sSaved to DBMS');
+      setIncompletedTaskList(updatedInCompleteTaskList);
+    } else {
+      console.log('try Later Dont able to operate ...!');
+    }
+
     task.isCompleted = true;
     const updatedCompleteTaskList = [task, ...completedTaskList];
-    setCompletedTaskList(updatedCompleteTaskList);
+    // setCompletedTaskList(updatedCompleteTaskList);
 
-
+    if (saveData('completeTaskList', updatedCompleteTaskList)) {
+      console.log('sSaved to DBMS');
+      setCompletedTaskList(updatedCompleteTaskList);
+    } else {
+      console.log('try Later Dont able to operate ...!');
+    }
   }
 
-  function removeTask(task)
-  {
+  function removeTask(task) {
     const updatedInCompleteTaskList = incompletedTaskList.filter(item => {
       return item.id !== task.id;
     });
-    setIncompletedTaskList(updatedInCompleteTaskList);
+
+    if (saveData('incompleteTaskList', updatedInCompleteTaskList)) {
+      console.log('sSaved to DBMS');
+      setIncompletedTaskList(updatedInCompleteTaskList);
+    } else {
+      console.log('try Later Dont able to operate ...!');
+    }
   }
 
-  // return (<HomeScreen/>);
-  useEffect(async () => {
-    
-    await getData(incompleteList); 
-    
-    
-    
-    setTimeout(() => {
-      console.log('Started !!');
-      SplashScreen.hide();
-    }, 500);
+  async function fetchIncompleteTaskList() {
+    try {
+      const comp = await fetchData('incompleteTaskList'); // Assuming fetchData returns a promise
+      if (comp) {
+        setIncompletedTaskList(comp); // Set the fetched data into state
+      } else {
+        console.log('Unable to fetch comp data, it is null');
+      }
+    } catch (error) {
+      console.error('Error fetching data from AsyncStorage:', error);
+    }
+  }
 
-  }, []);
+  async function fetchCompleteTaskList() {
+    try {
+      const comp = await fetchData('completeTaskList'); // Assuming fetchData returns a promise
+      if (comp) {
+        setCompletedTaskList(comp); // Set the fetched data into state
+      } else {
+        console.log('Unable to fetch comp data, it is null');
+      }
+    } catch (error) {
+      console.error('Error fetching data from AsyncStorage:', error);
+    }
+  }
+
+  async function checkUser() {
+    try {
+      const comp = await fetchData('UserData'); // Assuming fetchData returns a promise
+
+      if (comp) {
+        console.log('===== There is data =====', comp);
+        setIsUser(true);
+        setUser(comp);
+
+        // Set the fetched data into state
+      } else {
+        console.log('No user found');
+        // saveData('DashboardPendingData',[20,20,20,20,20,20,20]);
+      }
+    } catch (error) {
+      console.error('Error fetching data from AsyncStorage:', error);
+    }
+  }
+
+  async function setDashboardData() {
+    // Pending.....!
+    try {
+      const comp = await fetchData('DashboardPendingData'); // Assuming fetchData returns a promise
+
+      if (comp) {
+        console.log('===== There is data =====', comp); // Set the fetched data into state
+        setDashboardPendingDataList(comp);
+      } else {
+        console.log('Unable to fetch comp data, it is null ==');
+        saveData('DashboardPendingData', [20, 20, 20, 20, 20, 20, 20]);
+      }
+    } catch (error) {
+      console.error('Error fetching data from AsyncStorage:', error);
+    }
+
+    //  Completed Task
+
+    try {
+      const comp = await fetchData('DashboardCompletedData'); // Assuming fetchData returns a promise
+
+      if (comp) {
+        console.log('===== There is data =====', comp); // Set the fetched data into state
+        setDashboardCompleteDataList(comp);
+      } else {
+        console.log('Unable to fetch comp data, it is null ==');
+        saveData('DashboardCompletedData', [50, 50, 50, 50, 20, 20, 20]);
+      }
+    } catch (error) {
+      console.error('Error fetching data from AsyncStorage:', error);
+    }
+  }
+
+  useEffect(() => {
+    // // await getData(incompleteList);
+    // checkUser();
+    // fetchIncompleteTaskList();
+    // fetchCompleteTaskList();
+
+    // //  Temporary Code for setting Dashboard Data
+    // setDashboardData();
+
+
+    const loadData = async () => {
+      await checkUser();
+      await fetchIncompleteTaskList();
+      await fetchCompleteTaskList();
+      await setDashboardData();
+
+      // Hide splash screen once data is loaded
+      setLoading(false);
+    };
+
+    loadData();
+
+    setTimeout(() => {
+      if (!loading) SplashScreen.hide();
+    }, 1000); 
+
+  }, [loading]);
+
+  if (isUser === null) return null;
 
   return (
     <BaseContext.Provider
       value={{
         completedTaskList,
         incompletedTaskList,
+        dashboardPendingDataList,
+        dashboardCompleteDataList,
+        user,
+        isUser,
+        setUser,
         addTask,
         editTask,
         markAsIncomplete,
         markAsComplete,
-        removeTask
+        removeTask,
       }}>
-      <DrawerNavigation />
+      <DrawerNavigation inital={isUser ? 'Home' : 'Login'} />
+      {/* <LoginScreen/> */}
     </BaseContext.Provider>
     // <MainNavigation/>
   );
